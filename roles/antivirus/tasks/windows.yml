@@ -1,0 +1,40 @@
+---
+- name: 'Adjust token filter policy'
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: LocalAccountTokenFilterPolicy
+    type: dword
+    data: 1
+    state: present
+
+- name: 'Configure Windows Defender'
+  win_shell: "Set-MpPreference {{ pref }} -Force"
+  loop:
+    - -SignatureScheduleDay 7
+    - -SignatureScheduleTime 30
+    - -CheckForSignaturesBeforeRunningScan $True
+    - -DisableBehaviorMonitoring $True
+    - -DisableCatchupFullScan $True
+    - -DisableCatchupQuickScan $True
+    - -DisableEmailScanning $True
+    - -DisableRemovableDriveScanning $True
+    - -DisableRestorePoint $True
+    - -DisableScanningMappedNetworkDrivesForFullScan $True
+    - -DisableScanningNetworkFiles $True
+    - -SevereThreatDefaultAction Remove
+    - -HighThreatDefaultAction Remove
+    - -LowThreatDefaultAction Quarantine
+    - -ModerateThreatDefaultAction Quarantine
+    - -UnknownThreatDefaultAction Quarantine
+    - -PUAProtection Enabled
+    - -QuarantinePurgeItemsAfterDelay 1
+    - -RemediationScheduleDay 1
+    - -RemediationScheduleTime 60
+    - -ScanAvgCPULoadFactor 80
+    - -ScanOnlyIfIdleEnabled $True
+    - -ScanParameters 2
+    - -ScanScheduleDay 7
+    - -ScanScheduleTime 60
+  loop_control:
+    loop_var: pref
+  when: "ansible_distribution_major_version == '10'"

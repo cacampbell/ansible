@@ -1,0 +1,19 @@
+---
+- name: "Purge Detached Devices"
+  include_tasks: "{{ role_path }}/tasks/windows/purge.yml"
+  when: mfp_purge
+
+- name: "Configure Printers"
+  include_tasks: "{{ role_path }}/tasks/windows/mfp.yml"
+  vars:
+    mfp_name: "{{ item.make }} {{ item.model }}"
+    mfp_make: "{{ item.make }}"
+    mfp_model: "{{ item.model }}"
+    mfp_ip: "{{ item.ip }}"
+    mfp_share: "{{ item.share }}"
+    mfp_share_name: "{{ item.share_name }}"
+    mfp_default: "{{ item.default }}"
+    mfp_state: "{{ item.state }}"
+    mfp_location: "{{ item.location }}"
+    mfp_description: "{{ item.description }}"
+  loop: "{{ multifunction_printers }}"

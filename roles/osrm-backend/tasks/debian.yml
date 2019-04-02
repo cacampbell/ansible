@@ -1,0 +1,65 @@
+---
+
+- name: "Check for data directory"
+  file:
+      path: "{{ osrm_data }}"
+      state: directory
+      owner: "{{ ansible_user }}"
+      mode: 0764
+
+- name: "Check firewall pinhole"
+  ufw:
+      rule: allow
+      port: "{{ osrm_backend_port }}"
+      proto: tcp
+      comment: "OSRM Backend"
+  tags:
+      - osrm_firewall
+
+- name: "Template Preprocessing script"
+  template:
+      src: osrm_preprocess.sh.j2
+      dest: "{{ osrm_data }}/osrm_preprocess.sh"
+  tags:
+      - osrm_preproc
+
+- name: "Make pre-processing script executable"
+  acl:
+      path: "{{ osrm_data }}/osrm_preprocess.sh"
+      permissions: rwx
+      state: present
+      etype: "{{ type }}"
+  with_items:
+    - user
+    - group
+    - other
+  loop_control:
+      loop_var: type
+  tags:
+      - osrm_preproc
+
+- name: "Copy Route Profile to data directory"
+  copy:
+      src: "{{ osrm_profile }}.lua"
+      dest: "{{ osrm_data }}"
+      owner: "{{ ansible_user }}"
+      mode: 0764
+  tags:
+      - osrm_preproc
+
+- include_tasks: "{{ role_path }}/tasks/preprocess.yml"
+  when: osrm_preprocess
+
+- name: "Take ownership of entire data directory"
+  acl:
+      path: "{{ osrm_data }}"
+      permissions: rw
+      entity: "{{ ansible_user }}"
+      etype: "{{ type }}"
+  with_items:
+      - user
+      - group
+  loop_control:
+      loop_var: type
+
+- include_tasks: "{{ role_path }}/tasks/backend.yml"

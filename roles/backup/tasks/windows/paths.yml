@@ -1,0 +1,28 @@
+---
+- name: "Duplicati Config ({{ state }})"
+  win_file:
+    path: "{{ backup_duplicati_config_path }}"
+    state: "{% if state == 'present' %}directory{% else %}absent{% endif %}"
+
+- name: "Backup Directory ({{ state }})"
+  win_file:
+    path: "{{ backup_duplicati_db_path }}"
+    state: "{% if state == 'present' %}directory{% else %}absent{% endif %}"
+
+- name: "Backup DB file ({{ state }})"
+  win_shell: "sqlite3 {{ backup_duplicati_db_path|join('backups.sqlite') }} \".databases\""
+  when: "state == 'present'"
+
+- name: "Backup Location ({{ state }})"
+  become: true
+  win_file:
+    path: "{{ backup_duplicati_storage_path }}"
+    state: directory  # regardless of state, don't remove possible backup location
+  when:
+    - backup_duplicati_storage_path is defined
+    - backup_duplicati_storage_url|regex_search('file:') != ''
+
+- name: "Duplicati Donation Message Suppressor ({{ state }})"
+  win_file:
+    path: "{{ backup_duplicati_config_path }}/suppress_donation_messages.txt"
+    state: "{% if state == 'present' %}touch{% else %}absent{% endif %}"

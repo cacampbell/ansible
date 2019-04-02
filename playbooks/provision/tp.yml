@@ -1,0 +1,8 @@
+---
+# playbooks/thermal-printer.yml
+
+- hosts: windows_workstation
+  vars:
+    thermal_printer_share_name: 'citizen'
+  roles:
+    - thermal-printer

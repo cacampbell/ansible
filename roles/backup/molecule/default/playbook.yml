@@ -1,0 +1,52 @@
+---
+- name: Install, Configure and Backup
+  hosts: all
+  vars:
+    backup_install: true
+    backup_configure: true
+    backup_repair: false
+    backup_restore: false
+    backup_now: true
+    backup_remove: true
+    backup_restore_overwrite: true
+  roles:
+    - role: backup
+
+- name: Remove
+  hosts: all
+  vars:
+    backup_install: false
+    backup_configure: false
+    backup_repair: false
+    backup_restore: false
+    backup_now: false
+    backup_remove: true
+    backup_restore_overwrite: true
+  roles:
+    - role: backup
+
+- name: Install, Repair and Restore
+  hosts: all
+  vars:
+    backup_install: true
+    backup_configure: false
+    backup_repair: true
+    backup_restore: true
+    backup_now: false
+    backup_remove: false
+    backup_restore_overwrite: true
+  roles:
+    - role: backup
+
+- name: Remove
+  hosts: all
+  vars:
+    backup_install: false
+    backup_configure: false
+    backup_repair: false
+    backup_restore: false
+    backup_now: false
+    backup_remove: true
+    backup_restore_overwrite: true
+  roles:
+    - role: backup

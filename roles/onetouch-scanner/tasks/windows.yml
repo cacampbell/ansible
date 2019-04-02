@@ -1,0 +1,22 @@
+---
+# roles/onetouch/tasks/windows.yml
+- name: "Install Visioneer OneTouch"
+  block:
+    - win_copy:
+        src: "{{ onetouch_win_installer }}"
+        dest: "{{ onetouch_win_local_installer }}"
+        remote_src: true
+      become: true
+      become_method: runas
+      become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+      vars:
+        - ansible_become_user: "kls"
+        - ansible_become_password: "kls"
+    - win_package:
+        path: "{{ onetouch_win_local_installer }}"
+        state: present
+        expected_return_code: [0, 1603]  # Scanner connected (0); Scanner disconnected (1603)
+
+- name: "Install OneTouch scanner (Include)"
+  include_tasks: "{{ role_path }}/tasks/scanner.yml"
+  when: onetouch_scanner_attached

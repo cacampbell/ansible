@@ -1,0 +1,53 @@
+---
+- name: "Check Osmosis"
+  stat:
+    path: /usr/local/bin/osmosis
+  register: osmosis_present
+
+- set_fact:
+    osmosis_installed: osmosis_present.stat.islnk is defined and osmosis_present.stat.islnk
+
+- name: "Destroy Install Directory"
+  file:
+    path: "{{ osmosis_install_dir }}"
+    state: absent
+  when: not osmosis_installed
+
+- name: "Create Install Directory"
+  file:
+      path: "{{ osmosis_install_dir }}"
+      state: directory
+      owner: "{{ ansible_user }}"
+      mode: 0764
+  when: not osmosis_installed
+
+- name: "Clone Osmosis"
+  git:
+      repo: "{{ osmosis_url }}"
+      dest: "{{ osmosis_install_dir }}"
+
+- name: "Build Osmosis"
+  shell: ./gradlew assemble
+  args:
+      chdir: "{{ osmosis_install_dir }}"
+  when: not osmosis_installed
+
+- name: "Make Osmosis Executable"
+  acl:
+      path: "{{ osmosis_install_dir }}/package/bin/osmosis"
+      permissions: rwx
+      entity: "{{ ansible_user }}"
+      etype: "{{ type }}"
+  with_items:
+      - user
+      - group
+  loop_control:
+      loop_var: type
+  when: not osmosis_installed
+
+- name: "Link Osmosis to local bin"
+  file:
+      dest: /usr/local/bin/osmosis
+      src: "{{ osmosis_install_dir }}/package/bin/osmosis"
+      state: link
+  when: not osmosis_installed

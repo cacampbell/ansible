@@ -1,0 +1,7 @@
+---
+- name: 'Copy Coolutils media to uploader home'
+  win_copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "{{ coolutils_base }}"
+  loop: "{{ coolutils_media }}"

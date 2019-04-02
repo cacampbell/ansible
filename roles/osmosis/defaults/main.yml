@@ -1,0 +1,3 @@
+---
+osmosis_url: "git://github.com/openstreetmap/osmosis.git"
+osmosis_install_dir: "/usr/local/osmosis"

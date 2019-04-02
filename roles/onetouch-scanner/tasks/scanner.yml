@@ -1,0 +1,51 @@
+---
+# roles/onetouch-scanner/tasks/scanner.yml
+# install scanner for use with OneTouch
+
+- name: "Find available drivers for OneTouch scanner"
+  win_find:
+    paths: '{{ onetouch_win_scanner_drivers_base }}\{{ onetouch_scanner_make }}\{{ onetouch_scanner_model }}\'
+    patterns:
+      - '*.msi'
+      - '*.exe'
+  register: install_search
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+
+- name: "Copy installation media to machine"
+  win_copy:
+    src: "{{ item }}"
+    dest: "{{ onetouch_drivers_dir }}"
+    remote_src: true
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+  with_items: "{{ install_search.files|map(attribute='path')|list }}"
+
+- name: "Get local path information for installation media"
+  win_find:
+    paths: "{{ onetouch_drivers_dir }}"
+    patterns:
+     - '*.msi'
+     - '*.exe'
+  register: local_installer_search
+
+- name: "Install OneTouch scanner drivers"
+  win_package:
+    path: "{{ item }}"
+    state: present
+    expected_return_code: [0, 1638]
+  when: item.find('.msi') != -1
+  with_items: "{{ local_installer_search.files|map(attribute='path')|list }}"
+
+- name: "Install OneTouch scanner drivers"
+  win_shell: '."{{ item }}" install /silent /passive /qn'
+  when: item.find('.exe') != -1
+  with_items: "{{ local_installer_search.files|map(attribute='path')|list }}"

@@ -1,0 +1,15 @@
+---
+- name: "Template Backup Script"
+  template:
+    src: backup.sh.j2
+    dest: "{{ backup_duplicati_backup_script_path }}"
+    mode: 0744
+  notify: remove backup sh
+
+- name: "Backup"
+  shell: ". {{ backup_duplicati_backup_script_path }}"
+  environment:
+    AUTOUPDATER_Duplicati_SKIP_UPDATE: 1
+  register: backup_shell
+  failed_when:
+    - "backup_shell is failed and 'Backup completed successfully!' not in backup_shell.stdout"

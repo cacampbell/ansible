@@ -1,0 +1,67 @@
+---
+# roles/vnc-viewer/tasks/windows.yml
+# Install and Configure VNC
+
+- win_package:
+    path: "{{ vnc_viewer_win_installer }}"
+    product_id: '{26DEBF7F-3876-43C3-8365-5A2BC604DFA}'
+    arguments: /quiet /norestart /passive /qn
+    expected_return_code: [0, 1603]
+  register: result
+
+- win_chocolatey:
+    name: vnc-viewer
+  when: result.rc == 1603
+
+- name: Configure Viewer Store
+  block:
+    - setup:
+      delegate_to: "{{ suspect_host }}"
+      with_items: |
+          [{% for hostname in groups['workstation'] %}
+          '{{ hostname }}'{% if not loop.last %},{% endif %}
+          {% endfor %}
+          ]
+      loop_control:
+        loop_var: suspect_host
+      when: "hostvars[suspect_host]['ansible_default_ipv4'] is not defined"
+      ignore_errors: true
+
+    - win_template:
+        src: host.vnc.j2
+        dest: "{{ vnc_viewer_win_viewer_store }}\\{{ item['Uuid'] }}.vnc"
+      with_items: >
+        [ {% for hostname in groups['workstation'] %}
+          {
+            'Uuid': "{{ hostname|to_uuid }}",
+            'FriendlyName': "{{ hostname }}",
+            'Host': |
+              "{% if hostvars[hostname]['ansible_default_ipv4'] is defined %}
+               {{ hostvars[hostname]['ansible_defualt_ipv4'].address }}
+               {% else %}
+               {{ hostvars[hostname]['ansible_all_ipv4_addresses'][0] }}
+               {% endif %}"
+          }
+          {% if not loop.last %},{% endif %}
+          {% endfor %} ]
+      when: ansible_os_family|lower == 'windows'
+
+    - template:
+        src: host.vnc.j2
+        dest: "{{ vnc_viewer_deb_viewer_store }}/{{ item['Uuid'] }}.vnc"
+      with_items: >
+        [ {% for hostname in groups['workstation'] %}
+          {
+            'Uuid': "{{ hostname|to_uuid }}",
+            'FriendlyName': "{{ hostname }}",
+            'Host': |
+                "{% if hostvars[hostname]['ansible_default_ipv4'] is defined %}
+                 {{ hostvars[hostname]['ansible_default_ipv4'].address }}
+                 {% else %}
+                 {{ hostvars[hostname]['ansible_all_ipv4_addresses'][0] }}
+                 {% endif %}"
+          }
+          {% if not loop.last %},{% endif %}
+          {% endfor %} ]
+      when: ansible_os_family|lower != 'windows'
+  when: vnc_configure_viewerstore

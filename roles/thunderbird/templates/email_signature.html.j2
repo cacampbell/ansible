@@ -1,0 +1,25 @@
+<font size="-1" face="Calibri" color="#000000">
+<b>{{ first_name|default('') }} {{ last_name|default('') }}{% if first_name != '' or last_name != '' and job_title != '' %}|{% endif %}{{ job_title|default('') }}</b>
+<br />
+{% if region is defined %}{{ region }}|{% endif %}P: {{ primary_phone|default('916-373-3353') }}|<a href="http://www.ShipFSP.com">www.ShipFSP.com</a>
+</font>
+<br />
+{% if thunderbird_sig_image %}
+<img src="data:image/{{ thunderbird_sig_image_format|default('jpg') }};filename={{ thunderbird_sig_image_filename|default('portrait.jpg') }};base64,{{ thunderbird_sig_image_data|default('') }}" alt="Portrait" width="75" height="75" border="1" />
+{% endif %}
+<img src="data:image/png;filename=FSP_Logo.png;base64,{{ fsp_logo_image_data|default('') }}" alt="FSP Logo" width="225" height="75" />
+<br />
+{{ additional_signature_html|default('') }}
+<font face="Adobe Garamond Pro" size="-1" color="#333333">
+<i>
+{% if years_exp is defined %}
+{% if years_exp > 4 %}
+Proud Member of the FSP Logistics Family for {{ years_exp }} Years
+{% else %}
+{{ signature_quote }}
+{% endif %}
+{% else %}
+{{ signature_quote }}
+{% endif %}
+</i>
+</font>

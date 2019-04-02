@@ -1,0 +1,4 @@
+---
+ansible_dev_home: "/home/{{ ansible_user }}/ansible"
+ansible_dev_virtualenv: "ansible"
+ansible_dev_rebuild_boxes: false

@@ -1,0 +1,8 @@
+---
+# playbooks/configure-image-uploader.yml
+# Configure MyFSP Image Uploader (sets vars that would ordinarily be present in role)
+
+- hosts: all
+  roles:
+    - role: myfsp-image-uploader
+    - role: onetouch-scanner

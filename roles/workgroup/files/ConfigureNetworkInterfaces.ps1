@@ -1,0 +1,2 @@
+Invoke-WmiMethod -Class Win32_NetworkadapterConfiguration -Name SetDNSSuffixSearchOrder -ArgumentList @(@("kls.intranet"), $null)
+New-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\' -Name 'DisabledComponents' -Value '0xffffffff' -PropertyType 'DWord'

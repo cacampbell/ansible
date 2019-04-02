@@ -1,0 +1,69 @@
+---
+- name: "Get Bitbucket Vars"
+  include_vars: "{{ role_path }}/../../.ansible-bitbucket-vars.yml"
+
+- name: "Determine Repository Links"
+  set_fact:
+    ansible_repo: "https://{{ ansible_bitbucket_username }}:{{ ansible_bitbucket_password }}@bitbucket.org/{{ ansible_bitbucket_username }}/ansible.git"
+    inventory_repo: "https://{{ ansible_bitbucket_username }}:{{ ansible_bitbucket_password }}@bitbucket.org/{{ ansible_bitbucket_username }}/inventory.git"
+
+- name: "Ensure user has ownership of paths"
+  become: true
+  file:
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    state: directory
+    path: "{{ item }}"
+  loop:
+    - "{{ ansible_dev_home }}"
+    - "{{ pyenv_path }}"
+
+- name: "Get Main Repository"
+  git:
+    repo: "{{ ansible_repo }}"
+    dest: "{{ ansible_dev_home }}"
+    recursive: false
+    force: true
+    update: true
+
+- name: "Get Inventory Repository"
+  git:
+    repo: "{{ inventory_repo }}"
+    dest: "{{ ansible_dev_home }}/inventory"
+    recursive: false
+    force: true
+    update: true
+
+- name: "Transfer Mitogen"
+  copy:
+    src: mitogen-0.2.5.tar.gz
+    dest: "/home/{{ ansible_user }}/mitogen.tar.gz"
+  notify: remove mitogen archive
+
+- name: "Ensure Mitogen Directory"
+  file:
+    path: "{{ ansible_dev_home }}/mitogen"
+    state: directory
+
+- name: "Unpack Mitogen"
+  unarchive:
+    src: "/home/{{ ansible_user }}/mitogen.tar.gz"
+    dest: "{{ ansible_dev_home }}/mitogen"
+    remote_src: true
+    extra_opts: [--strip-components=1]
+
+- name: "Template Setup"
+  template:
+    src: setup.sh.j2
+    dest: "{{ ansible_dev_home }}/setup.sh"
+    mode: 0744
+  notify: remove setup script
+
+- name: "Setup Ansible"
+  shell: "{{ ansible_dev_home }}/setup.sh"
+
+- name: "Ensure .bashrc activates ansible env for login users"
+  lineinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    state: present
+    line: 'cd {{ ansible_dev_home }} && pyenv local ansible && source {{ ansible_dev_home }}/scripts/sh/set-ansible-vars.sh && cd ~'

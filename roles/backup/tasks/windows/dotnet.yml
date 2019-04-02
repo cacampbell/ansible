@@ -1,0 +1,5 @@
+---
+- name: ".NET Framework 4.5 ({{ dotnet_state }})"
+  win_chocolatey:
+    name: dotnet4.5.2
+    state: "{{ dotnet_state }}"

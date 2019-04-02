@@ -1,0 +1,10 @@
+---
+# roles/myfsp/defaults/main.yml
+
+onetouch_scanner: false
+onetouch_scanner_make: 'Visioneer'
+onetouch_scanner_model: 'RoadWarrior 120'
+
+thermal_printer: false
+thermal_printer_make: 'Citizen'
+thermal_printer_model: 'CL-S521'

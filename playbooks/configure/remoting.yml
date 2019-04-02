@@ -1,0 +1,39 @@
+---
+- name: "Reopen Remoting"
+  hosts: windows_workstation
+  gather_facts: false
+  tasks:
+    - psexec:
+        encrypt: false
+        hostname: "{{ ansible_host }}"
+        connection_username: "{{ ansible_user }}"
+        connection_password: "{{ ansible_password }}"
+        executable: powershell.exe
+        arguments: "-"
+        stdin: |
+          $ErrorActionPreference = "Stop"
+          $sec_protocols = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::SystemDefault
+          $sec_protocols = $sec_protocols -bor [Net.SecurityProtocolType]::Tls12
+          [Net.ServicePointManager]::SecurityProtocol = $sec_protocols
+          $url = "https://github.com/ansible/ansible/raw/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+          Invoke-Expression ((New-Object Net.WebClient).DownloadString($url)) -EnableCredSSP -ForceNewSSLCert
+          exit
+      delegate_to: localhost
+#      register: psexec1
+#      failed_when:
+#        - psexec1 is failed
+#        - '"unexpected" in psexec1.msg'
+#      delegate_to: localhost
+#    - psexec:
+#        encrypt: false
+#        load_profile: false
+#        hostname: "{{ ansible_host }}"
+#        connection_username: "{{ ansible_user }}"
+#        connection_password: "{{ ansible_password }}"
+#        executable: powershell.exe
+#        arguments:
+#          - -File \\kls-dms\dist\install\ansible\ConfigureRemotingForAnsible.ps1
+#          - -EnableCredSSP
+#          - -ForceNewSSLCert
+#      when: psexec1 is failed
+#      delegate_to: localhost

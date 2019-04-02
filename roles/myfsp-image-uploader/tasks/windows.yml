@@ -1,0 +1,52 @@
+---
+# roles/myfsp-image-uploader/tasks/windows.yml
+
+- name: 'Create Uploader Home'
+  win_file:
+    path: "{{ myfsp_image_uploader_base }}"
+    state: directory
+
+# setup for use with scripts
+- name: 'Copy scripts to uploader home'
+  win_copy:
+    remote_src: true
+    src: "{{ myfsp_image_uploader_src }}"
+    dest: "{{ myfsp_image_uploader_base }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+
+- name: 'Setup for Shortcut'
+  block:
+    - win_copy:
+        src: "{{ fsp_logo|default('fsp_logo.ico') }}"
+        dest: "{{ myfsp_image_uploader_base }}"
+    - win_acl:
+        path: "{{ myfsp_image_uploader_base }}"
+        user: "{{ ansible_user }}"
+        rights: FullControl
+        type: allow
+        state: present
+        inherit: ContainerInherit, ObjectInherit
+
+- name: 'Template Batch Scripts'
+  win_template:
+    src: "{{ item }}"
+    dest: "{{ myfsp_image_uploader_base }}\\Uploader\\{{ item|regex_replace('.j2') }}"
+  with_items:
+    - ConvertALL.bat.j2
+    - nametif.bat.j2
+    - upload.bat.j2
+    - upload.properties.j2
+
+- name: 'Create Desktop Shortcut'
+  win_shortcut:
+    src: "{{ myfsp_image_uploader_base }}\\Uploader\\ConvertALL.bat"
+    dest: "C:/Users/{{ ansible_user }}/Desktop/Upload Files to MyFSP.lnk"
+    state: present
+    directory: "{{ myfsp_image_uploader_base }}\\Uploader\\"
+    description: "Drag and drop files to upload to MyFSP"
+    icon: "{{ myfsp_image_uploader_base }}fsp_logo.ico"

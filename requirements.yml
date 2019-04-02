@@ -1,0 +1,36 @@
+# requirements.yml
+# Lists ansible-galaxy requirements
+
+- src: git+https://github.com/geerlingguy/ansible-role-java.git
+  version: 1.8.1
+  name: geerlingguy.java
+  scm: git
+
+- src: git+https://github.com/geerlingguy/ansible-role-mysql.git
+  version: 2.9.0
+  name: geerlingguy.mysql
+  scm: git
+
+- src: git+https://github.com/geerlingguy/ansible-role-docker.git
+  version: 2.5.1
+  name: geerlingguy.docker
+  scm: git
+
+- src: git+https://github.com/geerlingguy/ansible-role-git.git
+  version: 2.0.4
+  name: geerlingguy.git
+  scm: git
+
+- src: git+https://github.com/avanov/ansible-galaxy-pyenv.git
+  name: avanov.pyenv
+  scm: git
+
+- src: git+https://github.com/andrewrothstein/ansible-vagrant.git
+  name: andrewrothstein.vagrant
+  version: v1.0.16
+  scm: git
+
+- src: git+https://github.com/Oefenweb/ansible-virtualbox.git
+  version: v1.1.17
+  name: oefenweb.virtualbox
+  scm: git

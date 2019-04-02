@@ -1,0 +1,6 @@
+---
+# tasks file for stickies
+
+- include_tasks: windows.yml
+  when: ansible_os_family == 'Windows'
+  become: true

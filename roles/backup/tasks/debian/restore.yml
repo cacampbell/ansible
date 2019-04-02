@@ -1,0 +1,11 @@
+---
+- name: "Template Restore Script"
+  template:
+    src: restore.sh.j2
+    dest: "{{ backup_duplicati_restore_script_path }}"
+    mode: 0744
+  notify: remove restore sh
+
+- name: "Restore"
+  become: true
+  shell: "{{ backup_duplicati_restore_script_path }}"

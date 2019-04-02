@@ -1,0 +1,20 @@
+---
+- name: remove installer
+  win_file:
+    path: "{{ vnc_server_win_local_installer }}"
+    state: absent
+
+- name: remove license key
+  win_file:
+    path: "{{ vnc_server_win_local_license_key }}"
+    state: absent
+
+- name: remove license exe
+  win_file:
+    path: "{{ vnc_server_win_local_license_exe }}"
+    state: absent
+
+- name: restart vnc
+  win_service:
+    name: 'VNC Server'
+    state: restarted

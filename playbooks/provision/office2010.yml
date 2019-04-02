@@ -1,0 +1,61 @@
+---
+- hosts: windows_workstation
+  vars:
+    install_ms_office: true
+    ms_office_mak_key: 7Y2PH-9FHQJ-C8TBX-FFQW6-QB73G
+    uninstall_first: true
+  tasks:
+    - name: 'Make Local Copy of Microsoft Office 2010 Installation Media'
+      win_copy:
+        src: '\\kls-dms\dist\install\Microsoft\Office 2010 64bit w SP1\'
+        dest: '/Users/{{ ansible_user }}/KLS/Office2010/'
+        remote_src: true
+        force: no
+        local_follow: yes
+        creates:
+          - '\Users\{{ ansible_user }}\KLS\Office2010\setup.exe'
+          - '\Users\{{ ansible_user }}\KLS\Office2010\Standard.WW\config.xml'
+      when: install_ms_office
+      register: ms_office_installer
+
+    - name: 'Template config.xml for Office 2010'
+      win_template:
+        src: office2010-config.xml.j2
+        dest: '\Users\{{ ansible_user }}\KLS\Office2010\Standard.WW\config.xml'
+      when:
+        - ms_office_mak_key is defined
+        - ms_office_mak_key != ''
+        - install_ms_office
+
+    - name: 'Uninstalled: Microsoft Office 2016 Adware'
+      win_shell: Get-AppxPackage *officehub* | Remove-AppxPackage
+
+    - name: 'Uninstalled: Microsoft Office 2010 SP1'
+      win_package:
+        path: '\Users\{{ ansible_user }}\KLS\Office2010\setup.exe'
+        arguments: ' /uninstall Standard /config \Users\{{ ansible_user }}\KLS\Office2010\Standard.WW\config.xml'
+        state: present
+        product_id: '02278-001-0000106-38060'
+        reboot_required: true
+        expected_return_code: [0, 3010, 1641, 30066, 30050]  # restart required, installation corrupt (no install)
+      register: uninstalled
+      when: uninstall_first and ms_office_installer is not failed
+
+    - name: Reboot Windows
+      win_reboot:
+      when: uninstalled is changed
+
+    - name: 'Installed: Microsoft Office 2010 SP1'
+      win_package:
+        path: '\Users\{{ ansible_user }}\KLS\Office2010\setup.exe'
+        arguments: ' /config \Users\{{ ansible_user }}\KLS\Office2010\Standard.WW\config.xml'
+        state: present
+        product_id: '02278-001-0000106-38060'
+        reboot_required: true
+        expected_return_code: [0, 3010, 1641]
+      register: installed
+      when: install_ms_office and ms_office_installer is not failed
+
+    - name: Reboot Windows
+      win_reboot:
+      when: installed is changed

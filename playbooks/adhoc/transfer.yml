@@ -1,0 +1,39 @@
+---
+- name: "Backup Source Computer"
+  hosts: "{{ src }}"  # Inventory Hostname of Src
+  roles:
+    - role: backup
+  vars:
+    backup_duplicati_backup_name: "transfer_{{ src }}_{{ dest }}"
+    backup_duplicati_storage_path: "\\\\kls-dms\\workstations\\data\\{{ backup_duplicati_backup_name }}"
+    backup_install: true
+    backup_configure: false
+    backup_now: true
+    backup_restore: false
+    backup_remove: false
+    backup_duplicati_backup_paths:
+      - "C:\\Users\\{{ ansible_user }}\\"
+  post_tasks:
+    - set_fact:
+        src_db_path: "{{ backup_duplicati_db_path }}"
+        src_storage_path: "{{ backup_duplicati_storage_path }}"
+        src_backup_name: "{{ backup_duplicati_backup_name }}"
+
+- name: "Restore Backup to Destination Computer"
+  hosts: "{{ dest }}"  # Inventory Hostname of Dest
+  pre_tasks:
+    - set_fact:
+        backup_duplicati_db_path: "{{ hostvars[src]['src_db_path'] }}"  # Precedence over host / role vars
+        backup_duplicati_storage_path: "{{ hostvars[src]['src_storage_path'] }}"
+        backup_duplicati_backup_name: "{{ hostvars[src]['src_backup_name'] }}"
+  roles:
+    - role: backup
+  vars:
+    backup_install: true
+    backup_configure: false
+    backup_now: false
+    backup_restore: true
+    backup_remove: false
+    backup_duplicati_restore_paths:
+      - "C:\\Users\\{{ ansible_user }}\\"
+    backup_duplicati_restore_overwrite: true

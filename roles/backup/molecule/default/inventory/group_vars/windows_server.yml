@@ -1,0 +1,10 @@
+---
+ansible_connection: winrm
+ansible_winrm_transport: credssp
+ansible_winrm_server_cert_validation: ignore
+
+# Duplicati Configuration
+backup_duplicati_backup_paths:
+  - "C:\\Users\\{{ ansible_user }}\\Downloads"
+  - "C:\\Users\\{{ ansible_user }}\\Documents"
+  - "C:\\Users\\{{ ansible_user }}\\AppData"

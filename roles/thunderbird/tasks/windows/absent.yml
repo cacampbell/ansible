@@ -1,0 +1,29 @@
+---
+# Windows, Remove Thunderbird
+
+- name: 'Verify Thunderbird Uninstalled'
+  win_package:
+      path: "{{ thunderbird_win_installer }}"
+      product_id: "{{ thunderbird_win_guid }}"
+      state: absent
+
+- name: 'Purge Thunderbird Application Data'
+  win_file:
+      path: "{{ thunderbird_win_app_data|win_join('Thunderbird') }}"
+      state: absent
+  when:
+      - thunderbird_purge
+
+- name: 'No signature file'
+  win_file:
+      path: "{{ thunderbird_win_email_sig }}"
+      state: absent
+  when:
+      - thunderbird_purge
+
+- name: 'Purge Thunderbird Install Directory'
+  win_file:
+      path: "{{ thunderbird_win_app_dir }}"
+      state: absent
+  when:
+      - thunderbird_purge

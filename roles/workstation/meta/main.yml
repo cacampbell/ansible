@@ -1,0 +1,11 @@
+---
+dependencies:
+    - role: workgroup
+    - role: antivirus
+    - role: java
+    - role: vnc-server
+    - role: stickies
+    - role: thunderbird
+    - role: myfsp
+    - role: coolutils
+

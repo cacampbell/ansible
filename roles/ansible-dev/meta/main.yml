@@ -1,0 +1,29 @@
+---
+galaxy_info:
+  author: Chris Campbell
+  description: Configure Ansible Development Environment
+  company: KLS Air Express, Inc.
+  license: GPLv3
+  min_ansible_version: 2.5
+  platforms:
+    - name: Debian
+
+dependencies:
+  - role: geerlingguy.git
+    become: true
+  - role: avanov.pyenv
+    become: true
+    pyenv_global: "3.6.5"
+    pyenv_owner: "{{ ansible_user }}"
+    pyenv_path: "/home/{{ ansible_user }}/pyenv"
+    pyenv_python_versions:
+      - "3.6.5"
+    pyenv_virtualenvs:
+      - venv_name: "{{ ansible_dev_virtualenv|default('ansible') }}"
+        py_version: "3.6.5"
+  - role: geerlingguy.docker
+    become: true
+  - role: oefenweb.virtualbox
+    become: true
+  - role: andrewrothstein.vagrant
+    become: true

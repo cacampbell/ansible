@@ -1,0 +1,43 @@
+---
+# roles/java/tasks/windows.yml
+# Install and Configure Java on windows hosts
+
+- name: "Check deployment folder"
+  win_file:
+    path: "{{ java_win_deployment_directory }}"
+    state: directory
+
+- name: "Template user deployment.properties for Java"
+  win_template:
+    src: deployment.properties.j2
+    dest: "{{ java_win_deployment_directory }}deployment.properties"
+
+- name: "Template user site exceptions list"
+  win_template:
+    src: exception.sites.j2
+    dest: "{{ java_win_deployment_directory }}exception.sites"
+
+- name: "Template user install.properties for Java"
+  win_template:
+    src: install.properties.j2
+    dest: "{{ java_win_deployment_directory }}install.properties"
+
+- name: "Transfer Java Installer to Local"
+  win_copy:
+    remote_src: true
+    src: "{{ java_install_exe_remote }}"
+    dest: "{{ java_install_exe_local }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    ansible_become_user: kls
+    ansible_become_password: kls
+
+- name: "Install Java"
+  win_package:
+    path: "{{ java_install_exe_local }}"
+    state: present
+    arguments: "INSTALLCFG={{ java_win_deployment_directory }}install.properties"
+    product_id: {D33DF729-38BB-5651-9D40-93BFEFB5DCED}
+  ignore_errors: "{{ troublesome_java_install }}"

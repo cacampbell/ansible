@@ -1,0 +1,19 @@
+---
+- set_fact:
+      osm_merged_: "{{ osm_merged }}.tmp"
+
+- name: "Copy existing merge data to tmp"
+  copy:
+      src: "{{ osrm_data }}/{{ osm_merged }}"
+      dest: "{{ osrm_data }}/{{ osm_merged_ }}"
+      remote_src: true
+
+- name: "Merge data"
+  command: "osmosis --rb {{ b }}-latest.sort.osm.pbf --rb {{ osm_merged_ }} --merge --wb {{ osm_merged }}"
+  args:
+      chdir: "{{ osrm_data }}"
+
+- name: "Remove merge data tmp"
+  file:
+      path: "{{ osm_merged_ }}"
+      state: absent

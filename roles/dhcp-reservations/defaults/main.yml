@@ -1,0 +1,9 @@
+---
+# defaults file for dhcp-reservations
+
+switch_make: 'Cradlepoint'
+switch_model: 'AER 1500'
+switch: "{{ switch_make }} {{ switch_model }}"
+switch_user: 'admin'
+switch_password: ''
+switch_client_list_from: 'switch'  # 'ansible'

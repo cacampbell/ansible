@@ -1,0 +1,63 @@
+---
+# roles/vnc-server/tasks/windows.yml
+# Install and Configure VNC Server on windows host
+- win_copy:
+    remote_src: true
+    src: "{{ vnc_server_win_remote_installer }}"
+    dest: "{{ vnc_server_win_local_installer }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+  notify: remove installer
+
+- win_package:
+    path: "{{ vnc_server_win_local_installer }}"
+    product_id: '{D46A65E0-E741-4DD8-BAC1-F35DDB46C2E0}'
+    arguments: /quiet /norestart /passive /qn
+
+- win_copy:
+    remote_src: true
+    src: "{{ vnc_server_win_remote_license_key }}"
+    dest: "{{ vnc_server_win_local_license_key }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+  notify: remove license key
+
+- slurp:
+    src: "{{ vnc_server_win_local_license_key }}"
+  register: vnc_license
+
+- win_stat:
+    path: "{{ vnc_server_win_local_license_exe }}"
+  register: vncl_present
+
+- win_file:
+    path: "{{ vnc_win_home }}"
+    state: directory
+  when: not vncl_present.stat.exists
+
+- win_copy:
+    remote_src: true
+    src: "{{ vnc_server_win_remote_license_exe }}"
+    dest: "{{ vnc_server_win_local_license_exe }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+  when: not vncl_present.stat.exists
+  notify: remove license exe
+
+- win_shell: '."{{ vnc_server_win_local_license_exe }}" -add {{ vnc_license.content|b64decode }}'
+  register: result
+  failed_when: result.rc == 1 and 'already installed' not in result.stderr
+  changed_when: result.rc == 0
+  notify: restart vnc

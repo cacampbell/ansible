@@ -1,0 +1,10 @@
+---
+osrm_data: "/data/osrm"
+osrm_backend_port: "5001"
+osrm_frontend_port: "9966"
+osrm_profile: "car"
+osrm_preprocess: false
+osrm_download: false
+osrm_sort: false
+osrm_merge: false
+osrm_merge_restart: false

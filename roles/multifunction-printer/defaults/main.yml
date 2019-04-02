@@ -1,0 +1,14 @@
+---
+multifunction_printers:
+  - { make: '',
+      model: '',
+      ip: '',
+      state: 'absent',
+      default: false,
+      share: false,
+      share_name: 'printer',
+      description: '',
+      location: ''
+  }
+
+mfp_purge: false

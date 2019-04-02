@@ -1,0 +1,23 @@
+---
+- name: "Template Repair Script"
+  win_template:
+    src: repair.bat.j2
+    dest: "{{ backup_duplicati_repair_script_path }}"
+  notify: remove repair bat
+
+- name: "Make Repair Script Executable"
+  win_acl:
+    path: "{{ backup_duplicati_repair_script_path }}"
+    type: allow
+    rights: ExecuteFile
+    user: "{{ ansible_user }}"
+
+- name: "Set Duplicati AutoUpdate to Off"
+  win_environment:
+    state: present
+    name: AUTOUPDATER_Duplicati_SKIP_UPDATE
+    value: 1
+    level: user
+
+- name: "Repair"
+  win_shell: "{{ backup_duplicati_repair_script_path }}"

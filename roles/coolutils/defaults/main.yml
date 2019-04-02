@@ -1,0 +1,21 @@
+---
+# roles/CoolUtils/defaults/main.yml
+
+# Base Path
+coolutils_base: "C:\\Users\\{{ ansible_user }}\\KLS\\"
+
+# Installers and Keys
+coolutils_total_converter: \\kls-dms\dist\install\Coolutils\Total Converter\totalconverter.exe
+coolutils_total_converter_key: \\kls-dms\dist\install\Coolutils\Total Converter\totalconverter.txt
+coolutils_total_image_converter: \\kls-dms\dist\install\Coolutils\Total Image Converter\totalimageconverter.exe
+coolutils_total_image_converter_key: \\kls-dms\dist\install\Coolutils\Total Image Converter\totalimageconverter.txt
+coolutils_total_pdf_converter: \\kls-dms\dist\install\Coolutils\Total PDF Converter\totalpdfconverter.exe
+coolutils_total_pdf_converter_key: \\kls-dms\dist\install\Coolutils\Total PDF Converter\totalpdfconverter.txt
+
+coolutils_media:
+  - "{{ coolutils_total_converter }}"
+  - "{{ coolutils_total_converter_key }}"
+  - "{{ coolutils_total_image_converter }}"
+  - "{{ coolutils_total_image_converter_key }}"
+  - "{{ coolutils_total_pdf_converter }}"
+  - "{{ coolutils_total_pdf_converter_key }}"

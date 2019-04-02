@@ -1,0 +1,27 @@
+---
+- name: "Template Backup Script"
+  win_template:
+    src: backup.bat.j2
+    dest: "{{ backup_duplicati_backup_script_path }}"
+    mode: 0744
+  notify: remove backup bat
+
+- name: "Slurp Backup Script"
+  slurp:
+    src: "{{ backup_duplicati_backup_script_path }}"
+  register: backup_command
+
+- name: "Schedule Hourly Backup"
+  win_scheduled_task:
+    username: "{{ ansible_become_user|default(ansible_user) }}"
+    password: "{{ ansible_become_password|default(ansible_password) }}"
+    multiple_instances: 2
+    actions:
+      - path: powershell.exe
+        arguments: "{{ backup_command['content'] | b64decode }}"
+    triggers:
+      - type: registration
+        repetition:
+          - interval: PT1H
+    name: "duplicati-{{ backup_duplicati_backup_name }}"
+    state: "{% if backup_configure %}present{% else %}absent{% endif %}"

@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c229263a-20e3-48a0-8056-8141dc24ddcf" name="Default Changelist" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/inventory/production/DFW/host_vars/EHUNT.yml" beforeDir="false" afterPath="$PROJECT_DIR$/inventory/production/DFW/host_vars/EHUNT.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/default-ubuntu16.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/default-ubuntu16.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/default-ubuntu16.log" beforeDir="false" afterPath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/default-ubuntu16.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/default-windows2016.log" beforeDir="false" afterPath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/default-windows2016.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/kitchen.log" beforeDir="false" afterPath="$PROJECT_DIR$/roles/gather-facts/kitchen/.kitchen/logs/kitchen.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/gather-facts/kitchen/kitchen.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/gather-facts/kitchen/kitchen.yml" afterDir="false" />
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1678022322">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="9" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.21" value="1" />
+          <entry key="project.open.time.22" value="2" />
+          <entry key="project.open.time.25" value="2" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.70" value="1" />
+          <entry key="project.open.time.74" value="2" />
+          <entry key="project.open.time.84" value="1" />
+          <entry key="project.open.time.91" value="1" />
+          <entry key="project.opened" value="13" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="ansible-silo" value="1" />
+          <entry key="ansible-vault-pass" value="1" />
+          <entry key="ansible_rsa" value="1" />
+          <entry key="cfg" value="3" />
+          <entry key="j2" value="15" />
+          <entry key="log" value="3" />
+          <entry key="md" value="3" />
+          <entry key="ps1" value="9" />
+          <entry key="pub" value="1" />
+          <entry key="py" value="6" />
+          <entry key="rb" value="4" />
+          <entry key="reg" value="1" />
+          <entry key="sh" value="8" />
+          <entry key="txt" value="1" />
+          <entry key="yml" value="227" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Bash" value="8" />
+          <entry key="Ini" value="3" />
+          <entry key="Log" value="3" />
+          <entry key="Markdown" value="3" />
+          <entry key="PLAIN_TEXT" value="23" />
+          <entry key="PowerShell file" value="9" />
+          <entry key="Python" value="6" />
+          <entry key="YAML" value="227" />
+          <entry key="YAML_EX" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="cfg" value="3" />
+          <entry key="j2" value="536" />
+          <entry key="md" value="77" />
+          <entry key="ps1" value="31" />
+          <entry key="rb" value="89" />
+          <entry key="reg" value="4" />
+          <entry key="sh" value="24" />
+          <entry key="yml" value="10151" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Bash" value="24" />
+          <entry key="Ini" value="3" />
+          <entry key="Markdown" value="77" />
+          <entry key="PLAIN_TEXT" value="629" />
+          <entry key="PowerShell file" value="31" />
+          <entry key="YAML" value="10151" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+<<<<<<< HEAD
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/packer/vbox-win2016.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/bash/rebuild-vm-images.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/powershell/Boxstart-packer.ps1">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1770">
+              <caret line="118" column="27" selection-start-line="118" selection-start-column="27" selection-end-line="118" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/powershell/BootstrapBoxstarter-packer.ps1">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/packer/answer_files/win10/autounattend.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="90" column="35" selection-start-line="90" selection-start-column="35" selection-end-line="90" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/packer/answer_files/win2016/autounattend.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1860">
+              <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/packer/vbox-win10.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+=======
+    <leaf />
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/roles/vnc-server/defaults/main.yml" />
+        <option value="$PROJECT_DIR$/roles/vnc-server/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/stickies/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/onetouch-scanner/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/onetouch-scanner/tasks/scanner.yml" />
+        <option value="$PROJECT_DIR$/roles/thunderbird/templates/email_signature2.html.j2" />
+        <option value="$PROJECT_DIR$/inventory/production/HQ/hosts.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/HQ/host_vars/SXIONG.yml" />
+        <option value="$PROJECT_DIR$/inventory/staging/HQ/host_vars/KLS.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/ATORRES.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/MBENAVIDES.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/RGOMEZ.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/TVARGAS.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/VCERVANTES.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/group_vars/windows_workstation.yml" />
+        <option value="$PROJECT_DIR$/playbooks/declarative/share-drives.yml" />
+        <option value="$PROJECT_DIR$/roles/thunderbird/kitchen/default.yml" />
+        <option value="$PROJECT_DIR$/inventory/production/HQ/host_vars/SSCHMIDT.yml" />
+        <option value="$PROJECT_DIR$/inventory/staging/HQ/hosts.yml" />
+        <option value="$PROJECT_DIR$/roles/workstation/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/thunderbird/defaults/main.yml" />
+        <option value="$PROJECT_DIR$/roles/thunderbird/tasks/main.yml" />
+        <option value="$PROJECT_DIR$/roles/thunderbird/tasks/signature.yml" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/inventory/production/ELP/host_vars/ELPDISPATCH.yml" />
+        <option value="$PROJECT_DIR$/roles/myfsp-image-uploader/templates/nametif.bat.j2" />
+        <option value="$PROJECT_DIR$/scripts/rb/Vagrantfile.winrm.vbox.rb" />
+        <option value="$PROJECT_DIR$/scripts/rb/Vagrantfile.ssh.vbox.rb" />
+        <option value="$PROJECT_DIR$/roles/thermal-printer/meta/main.yml" />
+        <option value="$PROJECT_DIR$/roles/myfsp-image-uploader/templates/ConvertALL.bat.j2" />
+        <option value="$PROJECT_DIR$/playbooks/declarative/thermal-printer.yml" />
+        <option value="$PROJECT_DIR$/roles/thermal-printer/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/myfsp-image-uploader/tasks/scripts.yml" />
+        <option value="$PROJECT_DIR$/roles/myfsp-image-uploader/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/myfsp-image-uploader/defaults/main.yml" />
+        <option value="$PROJECT_DIR$/playbooks/declarative/coolutils.yml" />
+        <option value="$PROJECT_DIR$/roles/workstation/meta/main.yml" />
+        <option value="$PROJECT_DIR$/scripts/cmd/Enable_TLS1.X.reg" />
+        <option value="$PROJECT_DIR$/scripts/ps1/ReRegisterCortana.ps1" />
+        <option value="$PROJECT_DIR$/scripts/ps1/Boxstart.ps1" />
+        <option value="$PROJECT_DIR$/scripts/sh/install-silo.sh" />
+        <option value="$PROJECT_DIR$/scripts/sh/set-ansible-vars.sh" />
+        <option value="$PROJECT_DIR$/scripts/sh/uninstall-silo.sh" />
+        <option value="$PROJECT_DIR$/scripts/sh/install-testkitchen.sh" />
+        <option value="$PROJECT_DIR$/scripts/sh/update-galaxy.sh" />
+        <option value="$PROJECT_DIR$/scripts/sh/upgrade-packages.sh" />
+        <option value="$PROJECT_DIR$/roles/workgroup/handlers/main.yml" />
+        <option value="$PROJECT_DIR$/roles/workgroup/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/coolutils/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/java/tasks/windows.yml" />
+        <option value="$PROJECT_DIR$/roles/gather-facts/kitchen/kitchen.yml" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="2152" />
+    <option name="y" value="30" />
+    <option name="width" value="1440" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+            </path>
+<<<<<<< HEAD
+=======
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="coolutils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="coolutils" type="462c0819:PsiDirectoryNode" />
+              <item name="defaults" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="coolutils" type="462c0819:PsiDirectoryNode" />
+              <item name="filter_plugins" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="coolutils" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="gather-facts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="gather-facts" type="462c0819:PsiDirectoryNode" />
+              <item name="kitchen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="myfsp-image-uploader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="myfsp-image-uploader" type="462c0819:PsiDirectoryNode" />
+              <item name="filter_plugins" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="myfsp-image-uploader" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="onetouch-scanner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="onetouch-scanner" type="462c0819:PsiDirectoryNode" />
+              <item name="defaults" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="onetouch-scanner" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="workgroup" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="workgroup" type="462c0819:PsiDirectoryNode" />
+              <item name="handlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="workgroup" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="cmd" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="ps1" type="462c0819:PsiDirectoryNode" />
+            </path>
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/roles/coolutils" />
+      <recent name="$PROJECT_DIR$/roles/workgroup" />
+      <recent name="$PROJECT_DIR$/inventory/production/ATL/group_vars" />
+      <recent name="$PROJECT_DIR$/inventory/production/BOS/group_vars" />
+      <recent name="$PROJECT_DIR$/inventory/production/DFW/group_vars" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c229263a-20e3-48a0-8056-8141dc24ddcf" name="Default Changelist" comment="" />
+      <created>1531850236177</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1531850236177</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+<<<<<<< HEAD
+    <frame x="0" y="30" width="1920" height="1050" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33511207" />
+=======
+    <frame x="1920" y="30" width="1920" height="1050" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2796158" />
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49928573" weight="0.3286334" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" weight="0.32917467" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+<<<<<<< HEAD
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007143" side_tool="true" weight="0.3298731" />
+      <window_info anchor="bottom" id="Version Control" order="11" visible="true" weight="0.32934782" />
+=======
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007143" side_tool="true" weight="0.3286334" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="bottom" id="LuaCheck" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="R Graphics" order="4" />
+      <window_info anchor="right" id="R Packages" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.221875" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="LuaCheck" order="0" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49928573" weight="0.3298731" />
+      <window_info anchor="bottom" id="Run" order="3" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5007143" side_tool="true" weight="0.3298731" />
+      <window_info anchor="bottom" id="Version Control" order="12" />
+      <window_info anchor="bottom" id="Python Console" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="R Graphics" order="4" />
+      <window_info anchor="right" id="R Packages" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/packer/packer-windows" />
+    </ignored-roots>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/playbooks/declarative/thermal-printer.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/files/ansible_rsa">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/files/ansible_rsa.pub">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/thermal-printer/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-573">
+          <caret line="16" column="35" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/templates/nametif.bat.j2">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/tasks/scripts.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/meta/main.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/playbooks/declarative/coolutils.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/templates/ConvertALL.bat.j2">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/defaults/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="11" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/workstation/meta/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible.cfg">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/tasks/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="81" selection-start-line="3" selection-start-column="81" selection-end-line="3" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/inventory/testing/group_vars/windows_workstation.yml" />
+    <entry file="file://$PROJECT_DIR$/roles/thunderbird/molecule/default/playbook.yml">
+=======
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/onetouch-scanner/tasks/scanner.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/onetouch-scanner/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="90">
+            <caret line="6" selection-start-line="6" selection-end-line="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/ConfigureNetworkInterfaces.ps1">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/ConfigureRemotingForAnsible.ps1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3960" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/InstallChocolatey.ps1">
+>>>>>>> 21a1cbd381ef566e2ec76906eaf3cc9d8a823296
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/ReRegisterCortana.ps1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="84" lean-forward="true" selection-start-column="84" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/UpgradePowerShell.ps1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/py/update-cmdb.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/rb/Vagrantfile.ssh.vbox.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/rb/Vagrantfile.winrm.vbox.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/bootstrap-ansible.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/install-silo.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/Boxstart.ps1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="259" column="23" selection-start-line="259" selection-start-column="23" selection-end-line="259" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/upgrade-packages.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="70" selection-start-line="1" selection-start-column="70" selection-end-line="1" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/update-galaxy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/install-testkitchen.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/uninstall-silo.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sh/set-ansible-vars.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/ps1/BootstrapBoxstarter.ps1">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/cmd/Enable_TLS1.X.reg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="8" lean-forward="true" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="-4200">
+          <caret line="35" column="37" lean-forward="true" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible-bitbucket-vars.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible-email-vars.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible-marketing-share-vars.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible-silo">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.ansible-vault-pass">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/stickies/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/workgroup/handlers/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/workgroup/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/myfsp-image-uploader/filter_plugins/filters.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/coolutils/filter_plugins/filters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/java/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/coolutils/tasks/windows.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/coolutils/tasks/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/roles/gather-facts/kitchen/kitchen.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

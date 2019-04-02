@@ -1,0 +1,17 @@
+---
+- name: 'Thunderbird Installation Media Download'
+  win_get_url:
+      url: "{{ thunderbird_win_installer_download_url }}"
+      dest: "{{ thunderbird_win_installer_download_dest }}"
+  notify: remove installer
+
+- name: 'Set Fact'
+  set_fact:
+      thunderbird_win_installer: "{{ thunderbird_win_installer_download_dest }}"
+
+- name: 'Verify Thunderbird Installation'
+  win_package:
+      path: "{{ thunderbird_win_installer }}"
+      product_id: "{{ thunderbird_win_guid }}"
+      state: present
+      arguments: -ms

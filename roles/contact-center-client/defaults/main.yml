@@ -1,0 +1,5 @@
+---
+# defaults file for contact-center-client
+
+ccc_remote_path: "\\kls-dms\dist\install\Mitel Prairie Fyre\_Full\prairieFyre Software Inc"
+ccc_local_path: "C:\\Program Files (x86)\\prairieFyre Software Inc"

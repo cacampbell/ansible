@@ -1,0 +1,32 @@
+---
+- name: "Duplicati Config ({{ state }})"
+  file:
+    path: "{{ backup_duplicati_config_path }}"
+    state: "{% if state == 'present' %}directory{% else %}absent{% endif %}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: "Backup Database Directory ({{ state }})"
+  file:
+    path: "{{ backup_duplicati_db_path }}"
+    state: "{% if state == 'present' %}directory{% else %}absent{% endif %}"
+
+- name: "Backup DB file ({{ state }})"
+  shell: "sqlite3 {{ backup_duplicati_db_path|join('backups.sqlite') }} \".databases\""
+  when: "state == 'present'"
+
+- name: "Backup Location ({{ state }})"
+  become: true
+  file:
+    path: "{{ backup_duplicati_storage_path }}"
+    state: directory  # regardless of state, don't remove possible backup location
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  when:
+    - backup_duplicati_storage_path is defined
+    - backup_duplicati_storage_url|regex_search('file:') != ''
+
+- name: "Duplicati Donation Message Suppressor ({{ state }})"
+  file:
+    path: "{{ backup_duplicati_config_path|join('suppress_donation_messages.txt') }}"
+    state: "{% if state == 'present' %}touch{% else %}absent{% endif %}"

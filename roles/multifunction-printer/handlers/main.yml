@@ -1,0 +1,10 @@
+---
+- name: remove win script
+  win_file:
+    path: "C:\\Users\\{{ ansible_user }}\\Downloads\\removedevices.js"
+    state: absent
+
+- name: restart win spooler
+  win_service:
+    name: spooler
+    state: restarted

@@ -1,0 +1,10 @@
+---
+- name: "Remove Backup Provisioning"
+  hosts: all
+  roles:
+    - role: backup
+  vars:
+    backup_install: false
+    backup_configure: false
+    backup_restore: false
+    backup_remove: true

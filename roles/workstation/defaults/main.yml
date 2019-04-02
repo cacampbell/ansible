@@ -1,0 +1,8 @@
+---
+# roles/workstation/defaults/main.yml
+
+workstation_email_administrator: "{{ email_administrator|default(false) }}"
+workstation_administrator_email: "{{ administrator_email|default('chris_campbell@shipfsp.com') }}"
+workstation_csr: false
+
+zaza_win_installer: \\kls-dms\dist\install\ZAZA\zazaalerter_v3.0.msi

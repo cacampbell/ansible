@@ -1,0 +1,28 @@
+---
+- name: "Load Defaults (debian)"
+  include_vars:
+    file: "{{ role_path }}/vars/debian.yml"
+
+- name: "Install"
+  include_tasks: "{{ role_path }}/tasks/debian/install.yml"
+  when: backup_install
+
+- name: "Configure"
+  include_tasks: "{{ role_path }}/tasks/debian/configure.yml"
+  when: backup_configure
+
+- name: "Repair"
+  include_tasks: "{{ role_path }}/tasks/debian/repair.yml"
+  when: backup_repair
+
+- name: "Backup"
+  include_tasks: "{{ role_path }}/tasks/debian/backup.yml"
+  when: backup_now
+
+- name: "Restore"
+  include_tasks: "{{ role_path }}/tasks/debian/restore.yml"
+  when: backup_restore
+
+- name: "Remove"
+  include_tasks: "{{ role_path }}/tasks/debian/remove.yml"
+  when: backup_remove

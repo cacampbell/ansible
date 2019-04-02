@@ -1,0 +1,8 @@
+---
+# Load OS specific tasks for OSRM
+
+- include_tasks: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"
+  when: ansible_os_family|lower != 'elementary os'
+
+- include_tasks: "{{ role_path }}/tasks/debian.yml"
+  when: ansible_os_family|lower == 'elementary os'

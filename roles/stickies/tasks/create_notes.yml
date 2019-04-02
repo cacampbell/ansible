@@ -1,0 +1,18 @@
+---
+
+- name: 'Transfer STIs to host'
+  win_copy:
+      remote_src: true
+      src: '\\kls-dms\dist\install\Zyhorn\stickies\sti\{{ stack }}\'
+      dest: C:\Program Files (x86)\Stickies\sti\
+
+- name: 'Gather local STIs'
+  win_find:
+      paths: C:\Program Files (x86)\Stickies\sti\
+  register: local_stis
+
+- name: 'Create Stickies notes from STIs'
+  shell: "C:\Program Files (x86)\Stickies\sticky.exe 127.0.0.1 -file {{ sti }}"
+  with_items: local_stis
+  loop_control:
+      loop_var: sti

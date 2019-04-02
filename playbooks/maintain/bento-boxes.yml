@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  connection: local
+  strategy: linear
+  vars:
+      ansible_home: '.'
+      bento_release: 'v201808.24.0'
+      bento_repo: 'https://github.com/chef/bento.git'
+  tasks:
+      - name: 'Update Bento Submodule'
+        git:
+            repo: "{{ bento_repo }}"
+            dest: "{{ ansible_home }}/bento"
+            version: "{{ bento_release }}"
+
+      - name: 'Check Bento Box (ubuntu18)'
+        stat:
+            path: "{{ ansible_home }}/boxes/ubuntu18.box"
+        register: ubuntu_bento
+
+      - name: 'Check Bento Box (windows2016)'
+        stat:
+            path: "{{ ansible_home }}/boxes/windows2016.box"
+        register: windows_bento
+
+      - name: 'Build Bento Box (ubuntu18)'
+        command: "packer build -force --only=virtualbox-iso ubuntu-18.04-amd64.json"
+        args:
+            chdir: "{{ ansible_home }}/bento/ubuntu"
+        when: not ubuntu_bento.stat.exists
+
+      - name: 'Build Bento Box (windows2016)'
+        command: "packer build -force --only=virtualbox-iso 2016.json"
+        args:
+            chdir: "{{ ansible_home }}/bento/windows"
+        when: not windows_bento.stat.exists
+
+      - name: 'Move Bento Box (ubuntu18) to boxes'
+        command: "mv {{ ansible_home }}/bento/builds/ubuntu-18.04.virtualbox.box {{ ansible_home }}/boxes/ubuntu18.box"
+        when: not ubuntu_bento.stat.exists
+
+      - name: 'Move Bento Box (windows2016) to boxes'
+        command: "mv {{ ansible_home }}/bento/windows/windows-2016-standard-virtualbox.box {{ ansible_home }}/boxes/windows2016.box"
+        when: not windows_bento.stat.exists
+
+      - name: 'Add Boxes to Vagrant'
+        shell: "vagrant box add boxes/{{ item }}.box --force --name={{ item }}"
+        args:
+          chdir: "{{ ansible_home }}"
+        loop:
+            - windows2016
+            - ubuntu18
+

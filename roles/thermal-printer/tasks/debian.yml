@@ -1,0 +1,108 @@
+---
+# roles/myfsp-thermal-printer/tasks/debian.yml
+# Installation procedures for thermal printers on debian systems
+# assumes access to KLS share drives, and a Citizen thermal printer with JetDirect (9100) access
+
+- name: "Ensure CUPS destination"
+  file:
+      path: "/home/{{ ansible_user }}/KLS"
+      state: directory
+
+- name: "Put CUPS driver on host"
+  copy:
+      src: ctzcls.deb
+      dest: "{{ thermal_printer_local_cups }}"
+
+- name: "Install CUPS and dependencies"
+  package:
+      name: "{{ pkg }}"
+      state: present
+      use: apt
+  with_items:
+      - cups
+      - libc6
+      - libcups2
+      - libcupsimage2
+      - socat
+  loop_control:
+      loop_var: pkg
+  become: true
+
+- name: "Install CUPS driver"
+  apt:
+      deb: "{{ thermal_printer_local_cups }}"
+  become: true
+
+- name: "Determine thermal printer URI (usb)"
+  set_fact:
+      thermal_printer_uri: 'usb://{{ thermal_printer_make|upper }}/{{ thermal_printer_model|upper }}?serial=0.00'
+  when: thermal_printer_usb
+
+- name: "Determine thermal printer IP address (usb)"
+  set_fact:
+      thermal_printer_ip_addr: 127.0.0.1  # If USB printer, pretend its a network printer by addressing to localhost
+  when:
+      - thermal_printer_ip_addr is not defined or thermal_printer_ip_addr == ''
+      - thermal_printer_usb
+
+- name: "Determine thermal printer URI (lan)"
+  set_fact:
+      thermal_printer_uri: 'socket://{{ thermal_printer_ip_addr }}'
+  when: thermal_printer_lan
+
+- name: "Determine thermal printer IP address (lan)"
+  set_fact:
+      thermal_printer_ip_addr: 172.20.24.201
+  when:
+      - thermal_printer_ip_addr is not defined or thermal_printer_ip_addr == ''
+      - thermal_printer_lan
+
+- name: "Ensure existence of lpadmin user"
+  user:
+      name: lpadmin
+      state: present
+      groups: lp
+  become: true
+
+- name: "Ensure ansible user is in lp group"
+  user:
+      name: "{{ ansible_user }}"
+      state: present
+      groups: lp
+      append: true
+  become: true
+
+- name: "Add printer to CUPS (using transferred driver's PPD)"
+  shell: "lpadmin -p '{{ thermal_printer_make }}' -v {{ thermal_printer_uri }} -P /usr/share/cups/model/ctzcls.ppd -E"
+
+- name: "Template systemctl service => create, name, maintain unix plumbing as user lpadmin.lp"
+  template:
+      src: thermal-printer.service.j2
+      dest: /etc/systemd/system/thermal-printer.service
+  become: true
+
+- name: "Start thermal printer service"
+  systemd:
+      name: thermal-printer
+      state: started
+  notify: reload systemctl
+
+- name: "Enable thermal printer service at startup"
+  shell:  systemctl enable thermal-printer
+  become: true
+
+- name: "Verify user and group permissions for thermal-printer plumbing"
+  acl:
+      path: "{{ _path_ }}"
+      entity: lp
+      etype: group
+      permissions: rwx
+      state: present
+  with_items:
+      - "/var/run/lp"
+      - "/var/run/lp/{{ thermal_printer_make|lower }}"
+      - "/home/{{ ansible_user }}/lpt1"
+      - "/home/{{ ansible_user }}/lpt2"
+  loop_control:
+      loop_var: _path_
+  become: true

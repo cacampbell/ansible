@@ -1,0 +1,22 @@
+---
+- name: "Template Backup Script"
+  template:
+    src: backup.sh.j2
+    dest: "{{ backup_duplicati_backup_script_path }}"
+    mode: 0744
+  notify: remove backup sh
+
+- name: "Slurp Backup Script"
+  slurp:
+    src: "{{ backup_duplicati_backup_script_path }}"
+  register: backup_command
+
+- name: "Schedule Hourly Backup"
+  become: true
+  cron:
+    cron_file: "duplicati-{{ backup_duplicati_backup_name }}"
+    user: "{{ ansible_user }}"
+    special_time: hourly
+    job: "{{ backup_command.content | b64decode | replace('\\\n', '') }}"
+    name: "{{ backup_duplicati_backup_name }}"
+    state: "{% if backup_configure %}present{% else %}absent{% endif %}"

@@ -1,0 +1,17 @@
+---
+- hosts: "{{ host }}"
+  pre_tasks:
+    - name: "Ensure zlib"
+      become: true
+      apt:
+        name: zlib1g-dev
+        state: present
+        update_cache: true
+    - name: "Ensure OpenSSL"
+      become: true
+      apt:
+        name: libssl-dev
+        state: present
+        update_cache: true
+  roles:
+      - role: ansible-dev

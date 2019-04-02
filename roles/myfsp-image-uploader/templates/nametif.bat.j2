@@ -1,0 +1,19 @@
+@echo off
+SETLOCAL ENABLEDELAYEDEXPANSION
+
+set tifpath={{ myfsp_image_uploader_base }}hardcopy
+
+set libpath=%~dp0
+
+set filename=%~n1%~x1
+
+start /w wscript.exe "%libpath%inputhawb.vbs"
+call "%libpath%~userin.bat"
+del "%libpath%~userin.bat"
+set hawb=%USERIN%
+
+set filename=%filename:XXXXXX=!hawb!%
+set filename=%filename:H=h%
+set filename=%filename:TIF=tif%
+
+rename %1 %filename%

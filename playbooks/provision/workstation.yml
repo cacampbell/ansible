@@ -1,0 +1,14 @@
+---
+# playbooks/workstation.yml
+# Configuration for the Inventory Group / Role workstation
+
+- hosts: windows_workstation
+  vars:
+      thunderbird_install: true
+      thunderbird_configure: true
+      thunderbird_remove: false
+  strategy: linear
+  roles:
+      - role: workstation
+
+- import_playbook: ../maintain/update.yml

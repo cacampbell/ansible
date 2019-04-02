@@ -1,0 +1,10 @@
+---
+# playbooks/vnc.yml
+
+- hosts: windows_workstation
+  roles:
+    - vnc-server
+
+- hosts: IT:&windows_workstation
+  roles:
+    - vnc-viewer

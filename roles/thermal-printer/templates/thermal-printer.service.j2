@@ -1,0 +1,13 @@
+{{ ansible_managed|comment }}
+
+[Unit]
+Description=thermal-printer
+After=network.target
+
+[Service]
+User=lpadmin
+Group=lp
+ExecStartPre=/usr/bin/mkfifo -m '0664' /var/run/lp/{{ thermal_printer_make|lower }}
+ExecStart=/usr/bin/socat PIPE:/var/run/lp/{{ thermal_printer_make|lower }} TCP:{{ thermal_printer_ip_addr }}:9100
+Restart=always
+RuntimeDirectory=lp

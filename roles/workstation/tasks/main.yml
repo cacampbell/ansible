@@ -1,0 +1,29 @@
+---
+# roles/workstation/tasks/main.yml
+# Main tasks for Workstations (configure workstations based on OS family)
+
+- name: "Configure Workstation: {{ ansible_os_family }}"
+  include_tasks: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"
+
+- name: 'Get email vars'
+  include_vars: "{{ item }}"
+  with_first_found:
+    - '../.ansible-email-vars.yml'
+    - "{{ role_path }}/../../.ansible-email-vars.yml"
+    - .ansible-email-vars.yml
+    - ansible-email-vars.yml
+  when: workstation_email_administrator
+  delegate_to: localhost
+
+- name: "Email Administrator"
+  mail:
+    host: smtp.shipfsp.com
+    port: 25
+    username: "{{ ansible_email_username }}"
+    password: "{{ ansible_email_password }}"
+    sender: '{{ ansible_email_address }}'
+    to: "{{ thunderbird_administrator_email }}"
+    subject: "[Ansible (Workstation)] Remaining tasks for {{ ansible_hostname }}"
+    body: "System {{ ansible_hostname }} has completed setup.\nPlease log into this machine at {{ ansible_host }} and finish setting up."
+  when: workstation_email_administrator
+  delegate_to: localhost

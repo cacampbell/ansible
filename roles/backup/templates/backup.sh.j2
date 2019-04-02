@@ -1,0 +1,11 @@
+{{ backup_duplicati_path }} backup \
+{{ backup_duplicati_storage_url }} \
+{% for path in backup_duplicati_backup_paths %}{{ path }}{% if not loop.last %} {% endif %}{% endfor %} \
+--backup-name={{ backup_duplicati_backup_name }} \
+--dbpath={{ backup_duplicati_db_path|join('backups.sqlite') }} \
+--encryption-module=aes \
+--compression-module=zip \
+--dblock-size={{ backup_duplicati_backup_dblock_size }} \
+--passphrase={{ backup_duplicati_backup_passphrase }} \
+--disable-module=console-password-input \
+--keep-time={{ backup_duplicati_backup_keep_time }}

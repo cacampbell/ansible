@@ -1,0 +1,4 @@
+---
+# roles/myfsp-image-uploader/tasks/main.yml
+
+- include_tasks: "{{ role_path|join('tasks')|join(ansible_os_family|lower) }}.yml"

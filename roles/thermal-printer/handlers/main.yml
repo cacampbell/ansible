@@ -1,0 +1,47 @@
+---
+# roles/myfsp-thermal-printer/handlers/main.yml
+
+- name: "reboot windows"
+  win_reboot:
+  when:
+      - ansible_reboot_pending
+      - ansible_os_family|lower == 'windows'
+  listen: "reboot"  # accepts signals reboot windows, reboot
+
+- name: "reboot non-windows"
+  shell: reboot
+  when:
+      - ansible_reboot_pending
+      - ansible_os_family|lower != 'windows'
+  listen: "reboot"  # accepts signals reboot non-windows, reboot
+  become: true
+
+- name: "restart cups"
+  systemd:
+      name: cups
+      state: restarted
+      daemon_reload: true
+  become: true
+  listen: "reload systemctl"
+
+- name: "restart thermal-printer"
+  systemd:
+      name: thermal-printer
+      state: restarted
+      daemon_reload: true
+  become: true
+  listen: "reload systemctl"
+
+- name: "create symlinks"
+  file:
+      dest: "/var/run/lp/{{ thermal_printer_make|lower }}"
+      src: "/home/{{ ansible_user }}/{{ lpt }}"
+      state: link
+      mode: symbolic
+      force: yes
+  with_items:
+      - lpt1
+      - lpt2
+  loop_control:
+      loop_var: lpt
+  listen: "reload systemctl"

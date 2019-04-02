@@ -1,0 +1,5 @@
+---
+# roles/gather-facts/defaults/main.yml
+
+targets: "{{ groups['all'] }}"
+delegates: "{{ groups['all'] }}"

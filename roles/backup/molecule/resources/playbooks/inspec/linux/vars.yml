@@ -1,0 +1,4 @@
+---
+inspec_bin: /opt/inspec/bin/inspec
+inspec_download_source_dir: /usr/local/src
+inspec_test_directory: /tmp/molecule/inspec

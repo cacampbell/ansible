@@ -1,0 +1,7 @@
+---
+# roles/vnc/defaults/main.yml
+
+use_roles: no
+vnc_server_win_installer: '\\kls-dms\dist\install\VNC\VNC-Server-6.2.1-Windows-en-64bit.msi'
+vnc_server_win_key_file: '\\kls-dms\dist\install\VNC\Serial.txt'
+vnc_license_exe: '\\kls-dms\dist\install\VNC\vnclicense.exe'

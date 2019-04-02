@@ -1,0 +1,4 @@
+---
+# roles/vnc-viewer/tasks/main.yml
+
+- include_tasks: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"

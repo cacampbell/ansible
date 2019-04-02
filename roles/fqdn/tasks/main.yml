@@ -1,0 +1,33 @@
+---
+#roles/fqdn/tasks/main.yml
+# Configure Fully Qualified Domain Name for this endpoint
+
+- name: "Determine Public IP"
+  command: curl bot.whatismyipaddress.com
+  register: public_ip
+  when: fqdn_public_ip_addr == '127.0.0.1'
+
+- name: "Set Public IP"
+  set_fact:
+    fqdn_public_ip_addr: "{{ public_ip.stdout }}"
+  when:
+    - public_ip is success
+    - public_ip is defined
+    - public_ip.stdout is defined
+
+- name: "Template Hostname"
+  template:
+      src: hostname.j2
+      dest: /etc/hostname
+  become: true
+  register: hostname
+  notify: reboot
+
+- name: "Template Hosts"
+  template:
+      src: hosts.j2
+      dest: /etc/hosts
+  become: true
+  register: hosts
+  notify: reboot
+

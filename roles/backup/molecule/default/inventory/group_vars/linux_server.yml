@@ -1,0 +1,4 @@
+---
+# Duplicati Configuration
+backup_duplicati_backup_paths:
+  - "/home/{{ ansible_user }}"

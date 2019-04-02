@@ -1,0 +1,8 @@
+---
+- hosts: linux_server:linux_workstation
+  become: true
+  tasks:
+    - name: Linux Vars
+      include_vars: "inspec/linux/vars.yml"
+    - name: Linux Verification
+      include_tasks: "inspec/linux/verify.yml"

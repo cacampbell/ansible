@@ -1,0 +1,10 @@
+---
+- name: remove setup script
+  file:
+    path: "{{ ansible_dev_home }}/setup.sh"
+    state: absent
+
+- name: remove mitogen archive
+  file:
+    path: "/home/{{ ansible_user }}/mitogen.tar.gz"
+    state: absent

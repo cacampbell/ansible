@@ -1,0 +1,8 @@
+---
+- hosts: workstation
+  vars:
+      thunderbird_install: false
+      thunderbird_configure: false
+      thunderbird_remove: true
+  roles:
+    - thunderbird

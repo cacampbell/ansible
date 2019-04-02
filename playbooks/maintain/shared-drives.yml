@@ -1,0 +1,61 @@
+---
+
+- hosts: windows_workstation
+  tasks:
+    - win_command: 'net use /delete /y Z:'
+      register: delete_Z
+      failed_when: delete_Z is failed and 'The network connection could not be found' not in delete_Z.stderr
+
+    - win_command: 'net use Z: \\kls-dms\documents kls /user:kls /persistent:yes'
+
+- hosts: BADGESTATION
+  tasks:
+    - win_command: 'net use /delete /y M:'
+      register: delete_M
+      failed_when: delete_M is failed and 'The network connection could not be found' not in delete_M.stderr
+
+    - win_command: 'net use /delete /y S:'
+      register: delete_S
+      failed_when: delete_S is failed and 'The network connection could not be found' not in delete_S.stderr
+
+    - win_command: 'net use /delete /y Z:'
+      register: delete_Z
+      failed_when: delete_Z is failed and 'The network connection could not be found' not in delete_Z.stderr
+
+    - win_command: 'net use M: \\MIS-SERVER1\Marketing 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use S: \\MIS-SERVER1\Sage 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use Z: \\kls-dms\Documents kls /user:kls /persistent:yes'
+
+- hosts: executive
+  tasks:
+    - win_command: 'net use /delete /y M:'
+      register: delete_M
+      failed_when: delete_M is failed and 'The network connection could not be found' not in delete_M.stderr
+
+    - win_command: 'net use /delete /y Q:'
+      register: delete_Q
+      failed_when: delete_Q is failed and 'The network connection could not be found' not in delete_Q.stderr
+
+    - win_command: 'net use /delete /y S:'
+      register: delete_S
+      failed_when: delete_S is failed and 'The network connection could not be found' not in delete_S.stderr
+
+    - win_command: 'net use /delete /y Y:'
+      register: delete_Y
+      failed_when: delete_Y is failed and 'The network connection could not be found' not in delete_Y.stderr
+
+    - win_command: 'net use /delete /y Z:'
+      register: delete_Z
+      failed_when: delete_Z is failed and 'The network connection could not be found' not in delete_Z.stderr
+
+    - win_command: 'net use M: \\MIS-SERVER1\Marketing 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use Q: \\MIS-SERVER1\Accounting 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use S: \\MIS-SERVER1\Sage 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use Y: \\kls-dms\Sage 7979 /user:Accounting /persistent:yes'
+
+    - win_command: 'net use Z: \\kls-dms\Documents kls /user:kls /persistent:yes'

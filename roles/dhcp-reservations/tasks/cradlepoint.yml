@@ -1,0 +1,43 @@
+---
+# cradlepoint.yml
+# Create DHCP reservations for all clients currently connected,
+# or, just for hosts gathered during this run of ansible
+
+- name: "PING switch"
+  ping:
+  register: alive
+
+- name: "Get client list"
+  block:
+    - command: clients show all
+      register: switch_clients
+      when: switch_client_list_from == 'switch'
+
+    - set_fact:
+        clients: "{{ switch_clients|parse_cradlepoint_client_list }}"
+      when:
+        - switch_clients is defined and switch_clients != ''
+        - switch_client_list_from == 'switch'
+
+    - set_fact:
+        clients: |
+             [ {% for hostname in groups['all'] %}
+               {% if hostname not in groups['switch'] %}
+               {
+                 'hostname': '{{ hostname }}',
+                 'mac': '{{ hostvars[hostname].ansible_default_ipv4.macaddress }}',
+                 'ip_address': '{{ hostvars[hostname].ansible_default_ipv4 }}'
+               }
+               {% endif %}
+               {% if not loop.last %},{% endif %}
+               {% endfor %}
+             ]
+      when: switch_client_lists_from == 'ansible' or not clients is defined
+  when: alive is success
+
+- name: "Create reservations"
+  command: set /status/dhcpd/leases/{{ item.0 }} {{ item.1 | to_nice_json(spaces=4) }}
+  with_indexed_items: clients
+  when: alive is success
+
+

@@ -1,0 +1,38 @@
+---
+# User information
+first_name: ''
+last_name: ''
+job_title: 'Customer Care Specialist'
+region: "FSP"
+
+# Generic Signature Defaults
+address_line1: '2870 Gold Tailings CT'
+address_line2: 'Rancho Cordova, CA 95670'
+primary_phone: '916-373-3353'
+secondary_phone: '800-562-9915'
+additional_signature_html: ''
+signature_quote: '30 Years of Proven Logistics Excellence'
+
+# Windows path information
+thunderbird_win_app_dir: "C:\\Program Files (x86)\\Mozilla Thunderbird"
+thunderbird_win_app_data: "C:\\Users\\{{ ansible_user }}\\AppData\\Roaming"
+thunderbird_win_install_dir: "{{ thunderbird_win_app_dir }}"
+thunderbird_win_profile_dir: "C:\\Users\\{{ ansible_user }}\\AppData\\Roaming\\Thunderbird\\profiles"
+thunderbird_win_email_sig: "C:\\Users\\{{ ansible_user }}\\Documents\\email_signature.html"
+
+# Installer Information (Windows)
+thunderbird_win_guid: '{Mozilla Thunderbird 60.3 (x64 en-US)}'
+thunderbird_win_installer: '\\kls-dms\dist\install\Mozilla\Thunderbird\Thunderbird Setup 60.3.0.exe'
+thunderbird_win_installer_download_url: "https://download.mozilla.org/?product=thunderbird-60.3.0-SSL&os=win64&lang=en-US"
+thunderbird_win_installer_download_dest: "C:\\Users\\{{ ansible_user }}\\Downloads\\Thunderbird Setup 60.3.0.exe"
+
+# Installer Information (deb)
+thunderbird_deb_url: https://sourceforge.net/projects/ubuntuzilla/files/mozilla/apt/pool/main/t/thunderbird-mozilla-build/thunderbird-mozilla-build_60.2.1-0ubuntu1_amd64.deb/download
+
+# Role control
+thunderbird_install: false
+thunderbird_configure: false
+thunderbird_remove: false  # When absent, remove all files
+thunderbird_sig_image: false  # Will the signature include a portrait
+thunderbird_state: "{% if thunderbird_remove %}absent{% else %}present{% endif %}"
+thunderbird_fsp_logo_file: "{{ role_path }}/files/FSP_Logo.png"

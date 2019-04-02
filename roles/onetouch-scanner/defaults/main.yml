@@ -1,0 +1,14 @@
+---
+# roles/myfsp-image-uploader/defaults/main.yml
+onetouch_scanner: false
+onetouch_scanner_attached: "{{ onetouch_scanner }}"
+onetouch_scanner_make: 'Visioneer'
+onetouch_scanner_model: 'RoadWarrior 120'
+
+onetouch_win_installer: '\\kls-dms\dist\install\Drivers\Visioneer\OneTouch4Install.msi'
+onetouch_win_local_installer: 'C:\Users\{{ ansible_user }}\Downloads\OneTouch4Install.msi'
+onetouch_drivers_dir: 'C:\Users\{{ ansible_user }}\Downloads\OneTouch\'
+onetouch_win_scanner_drivers_base: '\\kls-dms\dist\install\Scanner Drivers'
+
+onetouch_registry_path: 'HKLM:\Software\Visioneer\OneTouch 4.0'
+onetouch_sta_apppath: 'C:\Users\{{ ansible_user }}\Uploader\ConvertAll.bat'

@@ -1,0 +1,7 @@
+---
+# roles/myfsp/meta/main.yml
+
+dependencies:
+  - role: myfsp-image-uploader
+  - role: onetouch-scanner
+  - role: thermal-printer

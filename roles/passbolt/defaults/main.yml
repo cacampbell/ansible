@@ -1,0 +1,31 @@
+---
+# defaults for passbolt
+
+# Docker Settings for Passbolt
+passbolt_http_host_port: 6602
+passbolt_https_host_port: 6603
+passbolt_container_name: passbolt
+
+# System python and pip version required
+passbolt_pip_version: 18.0
+passbolt_pip_docker_version: 3.5.0
+
+# Passbolt repository and tag
+passbolt_repository: https://github.com/passbolt/passbolt_docker.git
+passbolt_version: v2.2.0
+
+# Passbolt mysql (or mariadb) vars
+passbolt_mysql_root_password: ff0ce3c845140b150b4212b9a359d68d96417502eb669a22e81a5be9bfcb73b9  # sha256sum: mysql is op
+passbolt_mysql_database: passbolt
+passbolt_mysql_user: passbolt
+passbolt_mysql_password: 0fa1b2847a4163eeab9f93ded57d4a8f5bc2c5ee93bb28357588e1360c53f31f  # sha256sum: bolt on the passbolt
+
+# whether or not to override the program stage and restart matching docker containers
+passbolt_deploy: false
+passbolt_admin_email: "chris_campbell@shipfsp.com"
+passbolt_admin_first_name: "Chris"
+passbolt_admin_last_name: "Campbell"
+
+passbolt_url: "https://127.0.0.1:{{ passbolt_https_host_port }}"
+passbolt_security_salt: a4412ed5056cc520d38af1267fc2eade4f4260f768db13914f5e06e1377bd4c4  # sha256sum: Chromium (IV) Tetraflouride
+passbolt_stage: /data/passbolt

@@ -1,0 +1,6 @@
+---
+- name: Thunderbird
+  become: true
+  apt:
+    deb: "{{ thunderbird_deb_url }}"
+    state: "{{ thunderbird_state }}"

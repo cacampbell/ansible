@@ -1,0 +1,5 @@
+---
+# roles/myfsp-image-uploader/tasks/main.yml
+
+- name: "Include OS Specific tasks"
+  include_tasks: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"

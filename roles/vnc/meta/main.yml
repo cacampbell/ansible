@@ -1,0 +1,6 @@
+---
+# roles/vnc/meta/main.yml
+
+dependencies:
+  - { role: vnc-server }
+  - { role: vnc-viewer }

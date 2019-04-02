@@ -1,0 +1,76 @@
+---
+driver:
+  name: vagrant
+  raw_config_args:
+    - "vm.provider :virtualbox do |vb| vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on'] end"
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: Windows-2016-Server
+    box: windows2016
+    provision: true
+    instance_raw_config_args:
+      - "vm.guest = :windows"
+      - "vm.communicator = 'winrm'"
+      - "vm.network 'private_network', type: 'static', ip: '192.168.1.10'"
+      - "vm.network 'public_network', type: 'dhcp', bridge: 'enp1s0'"
+      - "vm.provision :shell, path: 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1', args: ' -EnableCredSSP'"
+    memory: 2048
+    cpus: 2
+    groups:
+      - windows_workstation
+      - windows_server
+  - name: Ubuntu-18-Server
+    box: ubuntu18
+    instance_raw_config_args:
+      - "vm.network 'private_network', type: 'static', ip: '192.168.1.11'"
+      - "vm.network 'public_network', type: 'dhcp', bridge: 'enp1s0'"
+    memory: 2048
+    cpus: 2
+    groups:
+      - linux_workstation
+      - linux_server
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    verify: ../resources/playbooks/verify.yml
+  inventory:
+    links:
+      group_vars: inventory/group_vars
+      host_vars: inventory/host_vars
+  lint:
+    name: ansible-lint
+scenario:
+  name: default
+  create_sequence:
+    - create
+    - prepare
+  check_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - prepare
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - verify
+    - destroy
+verifier:
+  name: inspec
+  lint:
+    name: rubocop

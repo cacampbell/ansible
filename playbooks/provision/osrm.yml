@@ -1,0 +1,17 @@
+---
+# Set Up OSRM
+
+- hosts: gamma
+  vars:
+      - osrm_data: "/data/osrm-truck"
+      - osrm_profile: "truck"
+      - osrm_preprocess: false
+      - osrm_download: false
+      - osrm_sort: false
+      - osrm_merge: false
+      - osrm_merge_restart: false
+      - osrm_backend_port: 5002
+      - osrm_frontend_port: 9964
+  roles:
+      - role: osrm
+  become: true

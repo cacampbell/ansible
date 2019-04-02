@@ -1,0 +1,12 @@
+---
+# roles/workgroup/defaults/main.yml
+
+cortana_reset: true
+# dns_servers: []  # Empty Lookup List = DHCP assigned
+dns_servers:
+  - 184.75.247.55
+  - 63.196.107.132
+
+# dns_servers:
+#   - '184.75.247.55'
+#   - '63.196.107.132'

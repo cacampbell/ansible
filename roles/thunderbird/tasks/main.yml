@@ -1,0 +1,5 @@
+---
+# tasks file for thunderbird
+
+- name: "OS Specific Tasks"
+  include_tasks: "{{ role_path }}/tasks/{{ ansible_os_family|lower }}.yml"

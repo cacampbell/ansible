@@ -1,0 +1,25 @@
+---
+- name: "Add Apt Key"
+  become: true
+  shell: "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys {{ backup_mono_apt_key }}"
+  when: mono_state == 'present'
+
+- name: "Apt Repository ({{ mono_state }})"
+  become: true
+  apt_repository:
+    repo: "{{ backup_mono_apt_repo }}"
+    state: "{{ mono_state }}"
+  notify: update apt
+
+- name: "Remove Apt Key"
+  become: true
+  shell: "apt-key remove {{ backup_mono_apt_key }}"
+  when: mono_state == 'absent'
+
+- meta: flush_handlers
+
+- name: "mono-runtime ({{ mono_state }})"
+  become: true
+  apt:
+    name: mono-runtime
+    state: "{{ mono_state }}"

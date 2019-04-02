@@ -1,0 +1,10 @@
+---
+# roles/vnc-server/defaults/main.yml
+
+vnc_server_win_remote_installer: \\kls-dms\dist\install\VNC\VNC-Server-6.2.1-Windows-en-64bit.msi
+vnc_server_win_local_installer: "C:\\Users\\{{ ansible_user }}\\Downloads\\VNC-Server-6.2.1-Windows-en-64bit.msi"
+vnc_server_win_remote_license_key: \\kls-dms\dist\install\VNC\Serial.txt
+vnc_server_win_local_license_key: "C:\\Users\\{{ ansible_user }}\\Downloads\\vnc_server_serial.txt"
+vnc_server_win_remote_license_exe: \\kls-dms\dist\install\VNC\vnclicense.exe
+vnc_server_win_local_license_exe: C:\Program Files\RealVNC\VNC Server\vnclicense.exe
+vnc_win_home: C:\Program Files\RealVNC\VNC Server

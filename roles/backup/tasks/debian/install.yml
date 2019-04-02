@@ -1,0 +1,27 @@
+---
+- name: "Mono"
+  include_tasks: "{{ role_path }}/tasks/debian/mono.yml"
+  vars:
+    mono_state: present
+
+- name: "Sqlite3"
+  include_tasks: "{{ role_path }}/tasks/debian/sqlite3.yml"
+  vars:
+    sqlite_state: present
+
+- name: "Paths (present)"
+  include_tasks: "{{ role_path }}/tasks/debian/paths.yml"
+  vars:
+    state: present
+
+- name: "Duplicati (present)"
+  become: true
+  apt:
+    deb: "{{ backup_duplicati_deb_url }}"
+    state: present
+
+- name: "Duplicati Service (started)"
+  become: true
+  service:
+    name: duplicati
+    state: started

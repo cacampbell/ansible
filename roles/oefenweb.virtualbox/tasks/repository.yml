@@ -1,0 +1,19 @@
+# tasks file for virtualbox
+---
+- name: add public key
+  apt_key:
+    id: "{{ item.id }}"
+    url: "{{ item.url }}"
+    state: present
+  with_items: "{{ virtualbox_public_keys }}"
+  tags:
+    - virtualbox-repository-public-key
+
+- name: add virtualbox repository
+  apt_repository:
+    repo: "{{ item.type }} {{ item.url }} {{ item.component }}"
+    state: present
+    update_cache: true
+  with_items: "{{ virtualbox_repositories }}"
+  tags:
+    - virtualbox-repository-add

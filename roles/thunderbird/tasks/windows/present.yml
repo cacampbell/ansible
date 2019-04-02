@@ -1,0 +1,7 @@
+---
+- name: 'Install'
+  include_tasks: "{{ role_path }}/tasks/windows/install.yml"
+  when: thunderbird_install
+
+- name: 'Check Signature'
+  include_tasks: "{{ role_path }}/tasks/windows/signature.yml"

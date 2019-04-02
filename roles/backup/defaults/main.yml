@@ -1,0 +1,35 @@
+---
+# Role Control
+backup_install: false
+backup_configure: true
+backup_remove: false
+backup_now: false
+backup_restore: false
+backup_repair: false
+backup_restore_overwrite: 'false'
+
+# Backup Configuration
+backup_duplicati_backup_name: "ansible-managed"
+backup_duplicati_backup_passphrase: "kls"
+backup_duplicati_backup_dblock_size: "100MB"
+backup_duplicati_backup_keep_time: "1M"
+backup_duplicati_backup_paths: []
+
+# Storage Configuration
+backup_duplicati_storage_path: "/backups/{{ backup_duplicati_backup_name }}"
+backup_duplicati_storage_url: "file://{{ backup_duplicati_storage_path }}"
+
+# Restore Configuration
+backup_duplicati_restore_name: "ansible-managed"
+backup_duplicati_restore_paths: "{{ backup_duplicati_backup_paths }}"
+backup_duplicati_restore_overwrite: "{{ backup_restore_overwrite }}"
+
+# Ubuntu Server Installation Info
+backup_mono_apt_repo: "deb https://download.mono-project.com/repo/ubuntu stable-bionic main"
+backup_mono_apt_key: "3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"
+backup_duplicati_deb_url: "https://updates.duplicati.com/beta/duplicati_2.0.4.5-1_all.deb"
+
+# Windows Duplicati 2.0.4.5
+backup_duplicati_msi_url: "https://updates.duplicati.com/beta/duplicati-2.0.4.5_beta_2018-11-28-x64.msi"
+backup_duplicati_msi_path: "C:\\Users\\{{ ansible_user }}\\Downloads\\duplicati-2.0.4.5.msi"
+backup_duplicati_service_path: "C:\\Program Files\\Duplicati 2\\DuplicatiService.exe"

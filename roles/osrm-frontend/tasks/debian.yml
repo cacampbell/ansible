@@ -1,0 +1,26 @@
+---
+
+- name: "Check firewall pinhole"
+  ufw:
+      rule: allow
+      port: "{{ osrm_frontend_port }}"
+      proto: tcp
+      comment: "OSRM Frontend"
+  tags:
+      - osrm_firewall
+
+- name: "Pull Latest OSRM Frontend Image"
+  docker_image:
+      name: "osrm/osrm-frontend"
+
+- name: "Start OSRM frontend"
+  docker_container:
+      name: "osrm-frontend-{{ osrm_profile }}"
+      image: "osrm/osrm-frontend"
+      ports:
+          - "{{ osrm_frontend_port }}:9966"
+      env:
+          OSRM_BACKEND: 'http://172.25.189.168:{{ osrm_backend_port }}'
+      state: started
+  tags:
+      - osrm_frontend

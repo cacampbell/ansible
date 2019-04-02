@@ -1,0 +1,6 @@
+---
+# roles/myfsp-image-uploader/defaults/main.yml
+
+# Base Paths
+myfsp_image_uploader_base: "C:\\Users\\{{ ansible_user }}\\KLS\\"
+myfsp_image_uploader_src: \\kls-dms\dist\install\MyFSP Image Uploader\Uploader Scripts\64-bit Windows\KLS\

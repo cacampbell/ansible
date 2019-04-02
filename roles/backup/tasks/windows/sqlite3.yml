@@ -1,0 +1,5 @@
+---
+- name: "Sqlite3 ({{ sqlite_state }})"
+  win_chocolatey:
+    name: sqlite
+    state: "{{ sqlite_state }}"

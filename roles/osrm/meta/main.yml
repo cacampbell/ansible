@@ -1,0 +1,8 @@
+---
+
+dependencies:
+    - role: geerlingguy.java
+    - role: geerlingguy.docker
+    - role: osmosis
+    - role: osrm-backend
+    - role: osrm-frontend

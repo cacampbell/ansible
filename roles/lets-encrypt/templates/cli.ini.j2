@@ -1,0 +1,5 @@
+{{ ansible_managed|comment }}
+rsa-key-size = 4096
+email = {{ letsencrypt_email }}
+domains = {{ ansible_fqdn }}
+authenticator = standalone

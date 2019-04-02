@@ -1,0 +1,47 @@
+---
+- set_fact:
+      thunderbird_sig_image_filename: "{{ first_name|lower }}_{{ last_name|lower }}.jpg"
+      thunderbird_sig_image_format: "jpg"
+  when:
+      - thunderbird_sig_image
+
+- set_fact:
+      thunderbird_sig_image_file: "/tmp/{{ thunderbird_sig_image_filename }}"
+  when:
+      - thunderbird_sig_image
+
+- name: 'Get Marketing Drive Credentials'
+  include_vars: "{{ role_path }}/../../.ansible-marketing-share-vars.yml"
+  when:
+      - thunderbird_sig_image
+
+- name: 'Marketing Drive: Mounted'
+  command: 'mount -t cifs //172.20.24.37/Marketing /media/marketing -o workgroup={{ marketing_workgroup }},username={{ marketing_user }},password={{ marketing_password }}'
+  delegate_to: localhost
+  become: true
+  when:
+      - thunderbird_sig_image
+  notify: unmount marketing
+
+- name: 'User Portrait: Copied'
+  copy:
+      src: "/media/marketing/Employee\ Badges/Pictures/{{ thunderbird_sig_image_filename }}"
+      dest: "/tmp/{{ thunderbird_sig_image_filename }}"
+  delegate_to: localhost
+  when:
+      - thunderbird_sig_image
+
+- set_fact:
+      thunderbird_sig_image_data: "{{ thunderbird_sig_image_file|b64data }}"
+  delegate_to: localhost
+  when:
+      - thunderbird_sig_image
+
+- set_fact:
+      fsp_logo_image_data: "{{ thunderbird_fsp_logo_file|b64data }}"
+  delegate_to: localhost
+
+- name: 'Verify Email Signature File'
+  win_template:
+      src: 'email_signature.html.j2'
+      dest: "{{ thunderbird_win_email_sig }}"

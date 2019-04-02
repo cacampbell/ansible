@@ -1,0 +1,5 @@
+---
+# windows specific configuration information for thunderbird
+
+- name: 'Thunderbird State Specific Tasks'
+  include_tasks: "{{ role_path }}/tasks/windows/{{ thunderbird_state }}.yml"

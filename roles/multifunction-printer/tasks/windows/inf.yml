@@ -1,0 +1,96 @@
+---
+- name: "Add Drivers to DriverStore"
+  win_command: "Pnputil.exe -a \"{{ inf }}\""
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  register: driverstore
+  when: mfp_state == 'present'
+
+- name: "List Driver Store"
+  win_command: "dism /online /get-driverinfo /driver:{{ driverstore | int_pub_name }}"
+  register: drivers
+  when: mfp_state == 'present'
+
+- name: "Determine driver matching printer by Hardware ID"
+  set_fact:
+    mfp_driver_name: "{{ drivers.stdout_lines | driver_name(mfp_make, mfp_model, 'Hardware ID') }}"
+  when:
+    - mfp_state == 'present'
+
+- name: "Determine driver matching printer by Compatible IDs"
+  set_fact:
+    mfp_driver_name: "{{ drivers.stdout_lines | driver_name(mfp_make, mfp_model, 'Compatible IDs') }}"
+  when:
+    - mfp_state == 'present'
+    - mfp_driver_name == ""
+
+- name: "Determine driver matching printer by Description"
+  set_fact:
+    mfp_driver_name: "{{ drivers.stdout_lines | driver_name(mfp_make, mfp_model, 'Description') }}"
+  when:
+    - mfp_state == 'present'
+    - mfp_driver_name == ""
+
+- name: "Add Printer Driver"
+  win_shell: "Add-PrinterDriver -name \"{{ mfp_driver_name }}\""
+  when: mfp_state == 'present'
+
+- name: "Add Printer Port"
+  win_shell: "Add-PrinterPort -name \"IP_{{ mfp_ip }}\" -printerhostaddress \"{{ mfp_ip }}\""
+  register: addport
+  failed_when: "addport is failed and 'The specified port already exists.' not in addport.stderr"
+  when:
+    - mfp_state == 'present'
+    - mfp_ip is defined and mfp_ip != ''
+
+- name: "Add Printer"
+  win_shell: "Add-Printer -name \"{{ mfp_name }}\" -drivername \"{{ mfp_driver_name }}\" -port \"IP_{{ mfp_ip }}\""
+  register: addprint
+  failed_when: "addprint is failed and 'The specified printer already exists.' not in addprint.stderr"
+  when:
+    - mfp_state == 'present'
+    - addport is not skipped
+  notify: restart win spooler
+
+- name: "Configure Printer"
+  win_shell: "Set-Printer -name \"{{ mfp_name }}\" -Comment \"{{ mfp_description|default('{{ mfp_name }}') }}\" -Location \"{{ mfp_location|default('Office') }}\""
+  when:
+    - addprint is not skipped
+    - mfp_description is defined
+    - mfp_location is defined
+    - mfp_state == 'present'
+
+- name: "Share Printer"
+  win_shell: "Set-Printer -name \"{{ mfp_name }}\" -Shared ${{ mfp_share }} -ShareName \"{{ mfp_share_name }}\""
+  when:
+    - addprint is not skipped
+    - mfp_state == 'present'
+    - mfp_share
+
+- name: "Set Printer as Default"
+  win_shell: "(New-Object -ComObject WScript.Network).SetDefaultPrinter('{{ mfp_name }}')"
+  when:
+    - addprint is not skipped
+    - mfp_state == 'present'
+    - mfp_default
+
+- name: "Remove Printer"
+  win_shell: "Remove-Printer -name \"{{ mfp_name }}\""
+  failed_when: false
+  when: mfp_state == 'absent'
+  notify: restart win spooler
+
+- meta: flush_handlers
+
+- name: "Remove Printer Port"
+  win_shell: "Remove-PrinterPort -name \"IP_{{ mfp_ip }}\""
+  failed_when: false
+  when:
+    - mfp_state == 'absent'
+    - mfp_ip is defined and mfp_ip != ''
+
+- name: "Remove Printer Driver"
+  win_shell: "Remove-PrinterDriver -name \"{{ mfp_driver_name }}\""
+  failed_when: false
+  when: mfp_state == 'absent'

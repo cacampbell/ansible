@@ -1,0 +1,63 @@
+---
+- name: "Prepare Storage Location"
+  hosts: SERVERB
+  roles:
+    - role: workgroup
+  tasks:
+    - win_file:
+        path: "C:\\Backup"
+        state: directory
+    - win_share:
+        name: 'Backup'
+        description: 'Workstation Backups'
+        path: "C:\\Backup"
+        list: true
+        full: Everyone
+
+- name: "Backup Source Computer"
+  hosts: SERVERA
+  vars:
+    backup_duplicati_backup_name: "molecule_test_transfer"
+    backup_duplicati_storage_path: "\\\\{{ hostvars['SERVERB']['ansible_host'] }}\\Backup\\{{ backup_duplicati_backup_name }}"
+    backup_install: true
+    backup_configure: false
+    backup_repair: false
+    backup_now: true
+    backup_restore: false
+    backup_remove: false
+    backup_duplicati_backup_paths:
+      - "C:\\Users\\{{ ansible_user }}\\Documents"
+      - "C:\\Users\\{{ ansible_user }}\\Downloads"
+      - "C:\\Users\\{{ ansible_user }}\\Desktop"
+  pre_tasks:
+    - include_role:
+        name: workgroup
+  roles:
+    - role: backup
+  post_tasks:
+    - set_fact:
+        src_storage_path: "{{ backup_duplicati_storage_path }}"
+        src_backup_name: "{{ backup_duplicati_backup_name }}"
+
+- name: "Restore Backup to Destination Computer"
+  hosts: SERVERC
+  vars:
+    backup_install: true
+    backup_configure: false
+    backup_repair: true
+    backup_now: false
+    backup_restore: true
+    backup_remove: false
+    backup_duplicati_restore_paths:
+      - "C:\\Users\\{{ ansible_user }}\\Documents"
+      - "C:\\Users\\{{ ansible_user }}\\Downloads"
+      - "C:\\Users\\{{ ansible_user }}\\Desktop"
+    backup_duplicati_restore_overwrite: true
+  pre_tasks:
+    - include_role:
+        name: workgroup
+    - set_fact:
+        backup_duplicati_storage_path: "{{ hostvars['SERVERA']['src_storage_path'] }}"
+        backup_duplicati_backup_name: "{{ hostvars['SERVERA']['src_backup_name'] }}"
+  roles:
+    - role: backup

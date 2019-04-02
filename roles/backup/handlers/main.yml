@@ -1,0 +1,47 @@
+---
+- name: reboot linux
+  reboot:
+
+- name: reboot windows
+  win_reboot:
+
+- name: update apt
+  become: true
+  apt:
+    upgrade: false
+    update_cache: true
+
+- name: remove duplicati msi
+  win_file:
+    path: "{{ backup_duplicati_msi_path }}"
+    state: absent
+
+- name: remove backup sh
+  file:
+    path: "{{ backup_duplicati_backup_script_path }}"
+    state: absent
+
+- name: remove backup bat
+  win_file:
+    path: "{{ backup_duplicati_backup_script_path }}"
+    state: absent
+
+- name: remove restore sh
+  file:
+    path: "{{ backup_duplicati_restore_script_path }}"
+    state: absent
+
+- name: remove restore bat
+  win_file:
+    path: "{{ backup_duplicati_restore_script_path }}"
+    state: absent
+
+- name: remove repair sh
+  file:
+    path: "{{ backup_duplicati_repair_script_path }}"
+    state: absent
+
+- name: remove repair bat
+  win_file:
+    path: "{{ backup_duplicati_repair_script_path }}"
+    state: absent

@@ -1,0 +1,8 @@
+---
+# Local Storage Backend
+backup_duplicati_path: "C:\\Program Files\\Duplicati 2\\Duplicati.CommandLine.exe"
+backup_duplicati_config_path: "C:\\Users\\{{ ansible_user }}\\AppData\\Local\\Duplicati"
+backup_duplicati_db_path: "C:\\Users\\{{ ansible_user }}\\AppData\\Local\\Duplicati\\backups\\{{ backup_duplicati_backup_name }}"
+backup_duplicati_backup_script_path: "{{ backup_duplicati_config_path|join('backup.bat') }}"
+backup_duplicati_restore_script_path: "{{ backup_duplicati_config_path|join('restore.bat') }}"
+backup_duplicati_repair_script_path: "{{ backup_duplicati_config_path|join('repair.bat') }}"

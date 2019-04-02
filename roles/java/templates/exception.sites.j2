@@ -1,0 +1,7 @@
+{{ ansible_managed|comment }}
+# Java security site exceptions
+{% if java_deployment_exception_sites is defined %}
+{% for site in java_deployment_exception_sites %}
+{{ site }}
+{% endfor %}
+{% endif %}

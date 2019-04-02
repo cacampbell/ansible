@@ -1,0 +1,12 @@
+---
+# Run CCleaner in auto mode
+
+- hosts: all
+  tasks:
+  - name: 'Install CCleaner'
+    win_chocolatey:
+      name: ccleaner
+      state: latest
+
+  - name: 'Run CCleaner in Auto Mode'
+    shell: "& 'C:\\Program Files\\CCleaner\\ccleaner.exe' /auto"

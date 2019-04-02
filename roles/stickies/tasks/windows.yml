@@ -1,0 +1,107 @@
+---
+
+- name: 'Ensure existence of Stickies install directory'
+  win_file:
+      state: directory
+      path: C:\Program Files (x86)\Stickies
+
+- name: 'Copy Stickies to install directory'
+  win_copy:
+      remote_src: true
+      src: \\kls-dms\dist\install\Zyhorn\stickies\stickies.exe
+      dest: C:\Program Files (x86)\Stickies\
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+      - ansible_become_user: "kls"
+      - ansible_become_password: "kls"
+
+- name: 'Copy Stickies help to install directory'
+  win_copy:
+      remote_src: true
+      src: \\kls-dms\dist\install\Zyhorn\stickies\stickies.chm
+      dest: C:\Program Files (x86)\Stickies\
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+      - ansible_become_user: "kls"
+      - ansible_become_password: "kls"
+
+- name: 'Template INI files to install directory'
+  win_template:
+      src: "{{ item }}"
+      dest: "C:\\Program Files (x86)\\Stickies\\{{ item|regex_replace('.j2') }}"
+  with_items:
+      - friends.ini.j2
+      - options.ini.j2
+
+- name: 'Copy Stickies management utility to install directory'
+  win_copy:
+      remote_src: true
+      src: \\kls-dms\dist\install\Zyhorn\stickies\sticky.exe
+      dest: C:\Program Files (x86)\Stickies\sticky.exe
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+      - ansible_become_user: "kls"
+      - ansible_become_password: "kls"
+
+- name: 'Install Microsoft Visual C++ Redistributable 2008'
+  win_chocolatey:
+      name: vcredist2008
+      state: present
+
+- include_tasks: "{{ role_path }}/tasks/create_notes.yml"
+  when: stickies_stacks
+
+- name: 'Ensure existence of Windows Scheduled Task to start Stickies at logon'
+  win_scheduled_task:
+      name: 'Stickies'
+      description: 'Stickies Sticky Notes'
+      state: present
+      multiple_instances: false
+      start_when_available: true
+      update_password: false
+      triggers:
+          - type: logon
+      actions:
+          - path: C:\Program Files (x86)\Stickies\stickies.exe
+      user: "{{ inventory_hostname }}\\kls"
+  register: stickies_startup
+  ignore_errors: true
+
+- name: 'Ensure existence of startup folder'
+  win_file:
+      path: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\
+      state: directory
+
+- name: 'Create Startup Folder Shortcut'
+  win_shortcut:
+      src: C:\Program Files (x86)\Stickies\stickies.exe
+      dest: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Stickies.lnk
+      state: present
+
+- name: 'Create Desktop Shortcut'
+  win_shortcut:
+      src: C:\Program Files (x86)\Stickies\stickies.exe
+      dest: "C:\\Users\\{{ ansible_user }}\\Desktop\\Stickies.lnk"
+      icon: C:\Program Files (x86)\Stickies\stickies.exe,0
+      description: Sticky Notes
+
+- name: 'Ensure user has access to Stickies files'
+  win_acl:
+      path: "{{ p }}"
+      user: "{{ ansible_user }}"
+      type: allow
+      rights: FullControl
+  with_items:
+    - C:\Program Files (x86)\Stickies
+  loop_control:
+      loop_var: p
+
+- name: 'Reboot'
+  win_reboot:
+  when: stickies_startup.changed

@@ -1,0 +1,7 @@
+#!/bin/sh
+{{ ansible_managed|comment }}
+
+osrm-extract -p /opt/{{ osrm_profile }}.lua /data/{{ osm_merged }}
+osrm-partition /data/{{ osm_merged|regex_replace('.osm.pbf', '') }}.osrm
+osrm-customize /data/{{ osm_merged|regex_replace('.osm.pbf', '') }}.osrm
+touch /data/osrm-preprocess-{{ osrm_profile }}

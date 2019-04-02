@@ -1,0 +1,9 @@
+---
+# roles/vnc-viewer/defaults/main.yml
+
+vnc_viewer_win_installer: \\kls-dms\dist\install\VNC\VNC-Viewer-6.17.1113-Windows-en-64bit.msi
+vnc_viewer_win_key_file: \\kls-dms\dist\install\VNC\Serial.txt
+
+vnc_configure_viewerstore: false
+vnc_viewer_win_viewer_store: 'C:\Users\{{ ansible_user }}\AppData\Roaming\RealVNC\ViewerStore'
+vnc_viewer_deb_viewer_store: '\Users\{{ ansible_user }}\.vnc\ViewerStore'

@@ -1,0 +1,54 @@
+@echo off
+
+:: I cannot stress hard enough how important the trailing slash in the following line is!
+:: Removing it will break all of the paths for the uploader, please don't!
+set tifpath={{ myfsp_image_uploader_base }}hardcopy\
+set libpath=%~dp0
+set filename=%~n1%~x1
+set filebase=%~n1
+set fileext=%~x1
+set filepath=%~dp1
+
+IF [%1]==[] goto CallUploader
+IF /I %fileext%==.jpg GOTO ConvertIMAGE
+IF /I %fileext%==.eps GOTO ConvertIMAGE
+IF /I %fileext%==.psd GOTO ConvertIMAGE
+IF /I %fileext%==.png GOTO ConvertIMAGE
+IF /I %fileext%==.gif GOTO ConvertIMAGE
+IF /I %fileext%==.tif GOTO ConvertIMAGE
+IF /I %fileext%==.bmp GOTO ConvertIMAGE
+IF /I %fileext%==.tiff GOTO ConvertIMAGE
+IF /I %fileext%==.jpeg GOTO ConvertIMAGE
+IF /I %fileext%==.pdf GOTO ConvertPDF
+GOTO ErrorMessage
+
+:ConvertIMAGE
+"C:\Program Files (x86)\TotalImageConverter\ImageConverter.exe" "%filepath%%filename%" "%tifpath%" -s1800x1800 -o ue -c tif ext tif tc jpg log {{ myfsp_image_uploader_base }}uploader.log -verbosity detail
+GOTO UploadImage
+
+:ConvertPDF
+"C:\Program Files (x86)\CoolUtils\Total PDF Converter\PDFConverter.exe" "%filepath%%filename%" "%tifpath%" -c tif ext tif tc JPEG 
+GOTO UploadImage
+
+:ErrorMessage
+echo 'Not a Valid File Type'
+Pause
+
+GOTO SkipUpload
+
+:UploadImage
+
+set d=%date:~-4,4%%date:~-10,2%%date:~-7,2%
+set d=%d: =_%
+set t=%time:~0,2%%time:~3,2%%time:~6,2%
+set t=%t: =0%
+
+set stampedfilename=hXXXXXX.%d%-%t%.tif
+rename "%tifpath%%filebase%.tif" "%stampedfilename%"
+call "%libpath%nametif.bat" "%tifpath%%stampedfilename%"
+
+GOTO CallUploader
+
+:CallUploader
+
+call "%libpath%upload.bat"

@@ -1,0 +1,34 @@
+---
+- hosts: csr
+  vars:
+    - zaza_win_installer: '\\kls-dms.kls.intranet\dist\install\ZAZA\zazaalerter_v3.0.msi'
+    - zaza_win_local: "C:\\Users\\{{ ansible_user }}\\Downloads\\zaza.msi"
+    - zaza_state: present
+  tasks:
+    - name: 'Installed: .NET 4.5'
+      win_chocolatey:
+          name: dotnet4.5
+          state: "{{ zaza_state }}"
+
+    - name: 'Get ZaZa MSI'
+      become: true
+      become_method: runas
+      become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+      win_copy:
+        remote_src: true
+        src: "{{ zaza_win_installer }}"
+        dest: "{{ zaza_win_local }}"
+
+    - name: 'Install ZaZa Alerter'
+      become: true
+      become_method: runas
+      become_flags: logon_type=new_credentials logon_flags=netcredentials_only 
+      win_package:
+          path: "{{ zaza_win_local }}"
+          state: "{{ zaza_state }}"
+          product_id: '{AE911B5B-6516-4CCE-954F-1486FAFDA5AD}'
+
+    - name: 'Remove ZaZa MSI'
+      win_file:
+        path: "{{ zaza_win_local }}"
+        state: absent

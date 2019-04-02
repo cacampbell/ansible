@@ -1,0 +1,12 @@
+---
+# playbooks/deprovision-chocolatey.yml
+
+- hosts: workstation
+  tasks:
+  - win_chocolatey:
+      name: all
+      state: absent
+      force: yes
+    ignore_errors: yes
+  - win_command: "powershell.exe -ExecutionPolicy Unrestricted -Command Remove-Item -Recurse -Force $env:ChocolateyInstall"
+  - win_command: "powershell.exe -ExecutionPolicy Unrestricted -Command Remove-Item -Recurse -Force C:\\Python*"

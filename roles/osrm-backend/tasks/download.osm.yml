@@ -1,0 +1,19 @@
+---
+- set_fact:
+      name: "{{ osm_dataset }}-latest.osm.pbf"
+
+- set_fact:
+      abspath: "{{ osrm_data }}/{{ name }}"
+
+- set_fact:
+      url: "{{ osm_download_url }}/{{ name }}"
+
+- stat:
+      path: "{{ abspath }}"
+  register: osm
+
+- get_url:
+      url: "{{ url }}"
+      dest: "{{ abspath }}"
+      mode: 0664
+  when: not osm.stat.exists

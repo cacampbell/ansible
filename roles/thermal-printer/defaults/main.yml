@@ -1,0 +1,26 @@
+---
+# roles/myfsp-thermal-printer/defaults/main.yml
+
+# Thermal Printer role control variables
+thermal_printer: false
+thermal_printer_usb: false
+thermal_printer_lan: false
+thermal_printer_ip_addr: ''
+
+# Label printer information
+thermal_printer_make: 'Citizen'
+thermal_printer_model: 'CL-S521'
+thermal_printer_share_name: '{{ thermal_printer_make }}'
+thermal_printer_description: '{{ thermal_printer_make }} {{ thermal_printer_model }}'
+thermal_printer_driver: '{{ thermal_printer_description }}'
+
+# Settings for the Seagull driver wizard (windows)
+seagull_driver_remote_folder: '\\kls-dms\dist\install\Drivers\Citizen\Seagull'
+seagull_driver_local_folder: 'C:\Users\{{ ansible_user }}\KLS\'
+seagull_driver_wizard: "C:\\Users\\{{ ansible_user }}\\KLS\\Seagull\\DriverWizard.exe"
+seagull_driver_cert_local: "C:\\Users\\{{ ansible_user }}\\KLS\\Seagull\\citizen.cer"
+seagull_driver_cert_store: cert://localmachine/My
+
+# CUPS driver
+thermal_printer_local_cups:  "/home/{{ ansible_user }}/KLS/ctzcls.deb"
+

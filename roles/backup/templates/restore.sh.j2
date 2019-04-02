@@ -1,0 +1,10 @@
+{{ backup_duplicati_path }} restore \
+{{ backup_duplicati_storage_url }} \
+{% for path in backup_duplicati_restore_paths %}{{ path }}{% if not loop.last %} {% endif %}{% endfor %} \
+--backup-name={{ backup_duplicati_backup_name }} \
+--dbpath={{ backup_duplicati_db_path|join('backups.sqlite') }} \
+--encryption-module=aes \
+--compression-module=zip \
+--passphrase={{ backup_duplicati_backup_passphrase }} \
+--disable-module=console-password-input \
+--overwrite={{ backup_duplicati_restore_overwrite }}

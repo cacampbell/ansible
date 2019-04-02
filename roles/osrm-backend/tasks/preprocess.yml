@@ -1,0 +1,137 @@
+---
+
+- name: "Download OSM data"
+  include_tasks: "{{ role_path }}/tasks/download.osm.yml"
+  with_items: "{{ osm_datasets }}"
+  loop_control:
+      loop_var: osm_dataset
+  tags:
+      - osrm_preproc
+  when:
+      - osrm_download
+
+- name: "Sort OSM datasets by Type, then ID"
+  include_tasks: "{{ role_path }}/tasks/sort.osm.yml"
+  with_items: "{{ osm_datasets }}"
+  loop_control:
+      loop_var: dataset
+  tags:
+      - osrm_preproc
+  when:
+      - osrm_sort
+
+- name: "Check if merge data already exists"
+  stat:
+      path: "{{ osrm_data }}/{{ osm_merged }}"
+  register: merge_data
+  tags:
+      - osrm_preproc
+  when:
+      - osrm_merge
+
+- set_fact:
+      osrm_merge: true
+  when:
+      - osrm_merge
+      - not merge_data.stat.exists
+  tags:
+      - osrm_preproc
+
+- name: "Delete existing merge data"
+  file:
+      path: "{{ osrm_data }}/{{ osm_merged }}"
+      state: absent
+  when:
+      - osrm_merge
+      - osrm_merge_restart
+  tags:
+      - osrm_preproc
+
+- name: "Create empty merge data if it does not exist"
+  copy:
+      content: ""
+      dest: "{{ osrm_data }}/{{ osm_merged }}"
+      force: false
+      owner: "{{ ansible_user }}"
+      mode: 0764
+  register: new_merge_data
+  when:
+      - osrm_merge
+  tags:
+      - osrm_preproc
+
+- name: "Merge OSM datasets (serial)"
+  include_tasks: "{{ role_path }}/tasks/merge.osm.yml"
+  with_items: "{{ osm_datasets }}"
+  loop_control:
+      loop_var: b
+  when:
+      - osrm_merge
+  tags:
+      - osrm_preproc
+
+- name: "Remove merge tmp file"
+  file:
+      path: "{{ osrm_data }}/{{ osm_merged }}.tmp"
+      state: absent
+  tags:
+      - osrm_preproc
+
+- name: "Verify existence of OSRM preprocessing container"
+  docker_container:
+      name: "osrm-preprocess-{{ osrm_profile }}"
+      image: "osrm/osrm-backend"
+      volumes:
+          - "{{ osrm_data }}:/data"
+      ports:
+          - "{{ osrm_backend_port }}:5000"
+      tty: true
+      interactive: true
+      state: present
+      privileged: true
+  tags:
+     - osrm_backend
+
+- name: "Create local copy of routing profile"
+  copy:
+      src: "{{ osrm_profile }}.lua"
+      dest: "{{ osrm_data }}"
+  tags:
+      - osrm_backend
+
+- name: "Copy OSRM profile to backend container"
+  command: "docker cp {{ osrm_data }}/{{ osrm_profile }}.lua osrm-preprocess-{{ osrm_profile }}:/opt/{{ osrm_profile }}.lua"
+  tags:
+      - osrm_backend
+
+- name: "Preprocess routing data"
+  docker_container:
+      name: "osrm-preprocess-{{ osrm_profile }}"
+      image: "osrm/osrm-backend"
+      volumes:
+          - "{{ osrm_data }}:/data"
+      ports:
+          - "{{ osrm_backend_port }}:5000"
+      tty: true
+      interactive: true
+      state: started
+      privileged: true
+      recreate: false
+      command: "/data/osrm_preprocess.sh"
+      cleanup: true
+  tags:
+      - osrm_backend
+
+- name: "Wait for Preprocessing to complete"
+  wait_for:
+      path: "{{ osrm_data }}/osrm-preprocess-{{ osrm_profile }}"
+      timeout: 600000  # This can take some time
+  tags:
+      - osrm_preproc
+
+- name: "Remove Preprocessing lock"
+  file:
+      path: "{{ osrm_data }}/osrm-preprocess-{{ osrm_profile }}"
+      state: absent
+  tags:
+      - osrm_preproc

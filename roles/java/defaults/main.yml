@@ -1,0 +1,11 @@
+---
+# roles/java/defaults/main.yml
+
+java_win_deployment_directory: "C:\\Users\\{{ ansible_user }}\\AppData\\LocalLow\\Sun\\Java\\Deployment\\"
+java_deployment_exception_sites:
+  - http://www.shipfsp.com
+  - https://www.shipfsp.com
+
+java_install_exe_remote: \\kls-dms\dist\install\Java\x64\jre-10.0.2_windows-x64_bin.exe
+java_install_exe_local: "{{ java_win_deployment_directory }}jre-10.0.2_windows-x64_bin.exe"
+troublesome_java_install: false

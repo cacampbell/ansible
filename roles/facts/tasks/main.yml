@@ -1,0 +1,17 @@
+---
+# roles/gather-facts/tasks/main.yml
+# https://github.com/ansible/ansible/issues/23023
+# This role is meant to:
+# a) gather facts for each host in inventory on the ansible controller
+# b) gather facts for each host in inventory on each host
+# This allows you to make reference to the dynamic state of hosts from
+# other hosts in the inventory
+
+- name: "Gather Facts"
+  setup: "{{ item[0] }}"
+  delegate_to: "{{ item[1] }}"
+  delegate_facts: true
+  when: hostvars[item[0]]['defualt_ipv4'] is not defined
+  with_nested:
+      - "{{ targets }}"
+      - "{{ delegates }}"

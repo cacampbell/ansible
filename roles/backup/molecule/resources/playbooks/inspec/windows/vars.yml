@@ -1,0 +1,4 @@
+---
+inspec_bin: "C:\\opscode\\inspec\\bin\\inspec.bat"
+inspec_download_source_dir: "C:\\Users\\{{ ansible_user }}\\Downloads\\"
+inspec_test_directory: "C:\\Users\\{{ ansible_user }}\\AppData\\Local\\Temp\\1\\molecule\\inspec"

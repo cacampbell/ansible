@@ -1,0 +1,7 @@
+---
+# Passbolt provision script
+
+- hosts: CCAMPBELL
+  roles:
+    - role: passbolt
+  become: true

@@ -1,0 +1,61 @@
+---
+# zyxel.yml
+# Create DHCP reservations for all clients currently connected,
+# or, just for hosts gathered during this run of ansible
+
+- name: "PING switch"
+  ping:
+  register: alive
+
+- name: "Get client list"
+  block:
+    - command: show ip dhcp binding
+      register: switch_clients
+    - set_fact:
+        clients: "{{ switch_clients|parse_zyxel_client_list }}"
+      when:
+        - switch_clients is defined and switch_clients != ''
+        - switch_client_list_from == 'switch'
+
+    - set_fact:
+        clients: |
+             [ {% for hostname in groups['all'] %}
+               {% if hostname not in groups['switch'] %}
+               {
+                 'hostname': '{{ hostname }}',
+                 'mac': '{{ hostvars[hostname].ansible_default_ipv4.macaddress }}',
+                 'ipv4': '{{ hostvars[hostname].ansible_default_ipv4 }}'
+               }
+               {% endif %}
+               {% if not loop.last %},{% endif %}
+               {% endfor %}
+             ]
+      when: switch_client_list_from == 'ansible' or not clients is defined
+  when: alive is success
+
+- name: "Delete any existing DHCP pools for clients"
+  shell: >
+    configure terminal
+    no ip dhcp pool {{ delclient['hostname'] }}
+  register: delet
+  failed_when: delet is failed and not 'DHCP pool does not exist' in delet.stdout
+  with_items: clients
+  loop_control:
+    loop_var: delclient
+  when: alive is success
+
+- name: "Create DHCP reservations"
+  shell: >
+    configure terminal
+    ip dhcp pool {{ addclient['hostname'] }}
+    host {{ addclient['ipv4'] }}
+    hardware-address {{ addclient['mac'] }}
+    client-name {{ addclient['hostname'] }}
+    exit
+    write
+    exit
+  with_items: clients
+  loop_control:
+    loop_var: addclient
+  when: alive is success
+

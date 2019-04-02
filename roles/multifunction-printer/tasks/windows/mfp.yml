@@ -1,0 +1,68 @@
+---
+- name: "Determine paths"
+  set_fact:
+    mfp_driver_remote_path: "\\\\kls-dms\\dist\\install\\Drivers\\{{ mfp_make }}\\"
+    mfp_driver_local_path: "C:\\Users\\{{ ansible_user }}\\KLS\\Drivers\\"
+
+- name: "Check Local Folder"
+  win_file:
+    path: "{{ mfp_driver_local_path }}"
+    state: directory
+  when:
+    - mfp_state == 'present'
+
+- name: "Find available drivers"
+  win_find:
+    paths:
+      - "{{ mfp_driver_remote_path }}"
+      - "{{ mfp_driver_remote_path }}{{ mfp_model }}"
+    patterns:
+      - '*.inf'
+    file_type: directory
+    recursive: false
+  register: install_search
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+
+- name: "Copy drivers"
+  win_copy:
+    src: "{{ inst }}"
+    dest: "{{ mfp_driver_local_path }}"
+    remote_src: true
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+    - ansible_become_user: "kls"
+    - ansible_become_password: "kls"
+  loop: "{{ install_search.files|map(attribute='path')|list }}"
+  loop_control:
+    loop_var: inst
+  when:
+    - mfp_state == 'present'
+
+- name: "Get local inf files (inside transferred inf directory)"
+  win_find:
+    paths: "{{ mfp_driver_local_path }}"
+    patterns:
+     - '*.inf'
+    recurse: true
+  register: local_driver_search
+
+- name: "Configure Printer"
+  vars:
+    inf: "{{ driver }}"
+  include_tasks: "{{ role_path }}/tasks/windows/inf.yml"
+  loop: "{{ local_driver_search.files|map(attribute='path')|list }}"
+  loop_control:
+    loop_var: driver
+
+- name: "Check Local Folder"
+  win_file:
+    path: "C:\\Users\\{{ ansible_user }}\\KLS\\Drivers"
+    state: absent
+  when: mfp_state == 'absent'

@@ -1,0 +1,4 @@
+---
+- hosts: windows_workstation:linux_workstation
+  roles:
+    - role: multifunction-printer

@@ -1,0 +1,14 @@
+---
+- name: "DevCon Installed"
+  win_chocolatey:
+    name: devcon.portable
+    state: present
+
+- name: "Transfer Removal Script"
+  win_copy:
+    src: removedevices.js
+    dest: "C:\\Users\\{{ ansible_user }}\\Downloads\\removedevices.js"
+  notify: remove win script
+
+- name: "Remove Devices"
+  win_shell: "C:\\Users\\{{ ansible_user }}\\Downloads\\removedevices.js /noconfirm /quiet /deleteall"

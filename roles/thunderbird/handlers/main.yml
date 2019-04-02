@@ -1,0 +1,12 @@
+---
+# handlers file for thunderbird
+
+- name: remove installer
+  win_file:
+      path: "{{ thunderbird_win_installer_download_dest }}"
+      state: absent
+
+- name: unmount marketing
+  command: 'umount /media/marketing'
+  delegate_to: localhost
+  become: true

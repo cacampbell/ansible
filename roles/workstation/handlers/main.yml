@@ -1,0 +1,6 @@
+---
+- name: reboot windows
+  win_reboot:
+  register: reset
+  when: ansible_reboot_pending
+  failed_when: reset is failed and 'A system shutdown has already been scheduled.' not in reset.msg

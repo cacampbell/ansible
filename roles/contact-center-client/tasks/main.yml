@@ -1,0 +1,35 @@
+---
+# tasks file for contact-center-client
+- name: 'Install Microsoft Visual C++ Redist 2008 SP1'
+  debug:
+    msg: "TODO"
+
+- name: 'Install Microsoft Report Viewer Redist 2008 SP1'
+  debug:
+    msg: "TODO"
+
+- name: 'Install Microsoft Silverlight 3'
+  debug:
+    msg: "TODO"
+
+- name: 'Install Microsoft Sync Framework 2.0'
+  debug:
+    msg: "TODO"
+
+- name: 'Install Microsoft WSE 3.0 Runtime'
+  debug:
+    msg: "TODO"
+
+- name: 'Copy Contact Center Client to host'
+  win_copy:
+    remote_src: true
+    src: "{{ ccc_remote_path }}"
+    dest: "{{ ccc_local_path }}"
+
+- name: 'Create shortcut'
+  win_shortcut:
+    description: Contact Center Client
+    src: "%ProgramFiles%\\prairieFyre Software Inc\\CCM\\Applications\\ContactCenterClient\\PrairieFyreClientShell.exe"
+    dest: "C:\\Users\\{{ ansible_user }}\\Desktop\\Contact Center Client.lnk"
+    icon: "%ProgramFiles%\\prairieFyre Software Inc\\CCM\\Applications\\ContactCenterClient\\PrairieFyreClientShell.exe,0"
+    directory: "%ProgramFiles%\\prairieFyre Software Inc"

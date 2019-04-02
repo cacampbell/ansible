@@ -1,0 +1,78 @@
+---
+- name: 'Set DNS Servers'
+  win_dns_client:
+      adapter_names: "*"  # Module specific wildcard
+      ipv4_addresses: "{{ dns_servers }}"
+  register: win_dns_result
+  failed_when: win_dns_result.rc is defined and win_dns_result.rc not in [0, 1, 84, 85, 100]  # Successful, and not enabled for this adapter
+  # Since this task attempts to set DNS servers for every adapter, it makes sense that some would respond with "no ipv4"
+
+- name: 'Transfer scripts'
+  win_copy:
+      src: "{{ item }}"
+      dest: "\\Users\\{{ ansible_user }}\\Downloads\\{{ item }}"
+  loop:
+      - PrivatizeNetworks.ps1
+      - ConfigureNetworkInterfaces.ps1
+  notify: remove scripts
+
+- name: 'Privatize Networks'
+  win_command: "powershell.exe -ExecutionPolicy Bypass -File \\Users\\{{ ansible_user }}\\Downloads\\PrivatizeNetworks.ps1"
+  register: privatized
+  when: '"7" not in ansible_distribution_version'
+
+- name: 'Configure Network Interfaces'
+  win_command: "powershell.exe -ExecutionPolicy Bypass -File \\Users\\{{ ansible_user }}\\Downloads\\ConfigureNetworkInterfaces.ps1"
+  register: dns_suffix
+  changed_when: "'The property already exists.' not in dns_suffix.stderr"
+  failed_when: "dns_suffix is failed and 'The property already exists.' not in dns_suffix.stderr"
+  when:
+      - privatized is success
+
+- name: 'Enable Network Discovery'
+  block:
+    - win_command: netsh advfirewall firewall set rule group="network discovery" new enable=yes
+    - win_command: netsh firewall set service type=fileandprint mode=enable profile=all
+    - win_command: netsh advfirewall firewall set rule name="File and Printer Sharing (SMB-In)" dir=in new enable=yes
+
+- name: 'Join KLS Workgroup'
+  win_domain_membership:
+    dns_domain_name: kls.intranet
+    state: workgroup
+    workgroup_name: "{{ workgroup_name|default('KLS') }}"
+    domain_admin_user: kls
+    domain_admin_password: kls
+  register: domain_state
+  notify: reboot windows
+
+- name: 'Configure Energy Settings'
+  win_power_plan:
+    name: High performance
+  register: power_plan
+  ignore_errors: true
+
+- name: 'Configure Energy Settings'
+  win_power_plan:
+    name: Balanced
+  ignore_errors: true
+  when: power_plan is failed
+
+- name: 'Disable sleep'
+  block:
+    - win_command: powercfg.exe -x -disk-timeout-ac 0
+    - win_command: powercfg.exe -x -disk-timeout-dc 0
+    - win_command: powercfg.exe -x -standby-timeout-ac 0
+    - win_command: powercfg.exe -x -standby-timeout-dc 0
+    - win_command: powercfg.exe -x -hibernate-timeout-ac 0
+    - win_command: powercfg.exe -x -hibernate-timeout-dc 0
+
+- name: 'Disable Windows Consumer Experience'
+  win_regedit:
+      path: HKLM:\Software\Policies\Microsoft\Windows\CloudContent
+      name: DisableWindowsConsumerFeatures
+      data: 00000001
+      type: dword
+      state: present
+
+- name: 'Flush Handlers'  # Really need computer name changes to go through before depending on this
+  meta: flush_handlers

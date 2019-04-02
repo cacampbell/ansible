@@ -1,0 +1,45 @@
+---
+- name: 'Download Duplicati MSI'
+  win_get_url:
+    url: "{{ backup_duplicati_msi_url }}"
+    dest: "{{ backup_duplicati_msi_path }}"
+  notify: remove duplicati msi
+
+- name: "Duplicati Service (stopped)"
+  win_service:
+    name: duplicati
+    state: stopped
+  register: stop_service
+  failed_when:
+    - "stop_service is failed and 'No service named' not in stop_service.stderr"
+
+- name: 'Duplicati (absent)'
+  win_package:
+    path: "{{ backup_duplicati_msi_path }}"
+    state: absent
+
+- name: 'Duplicati Configuration Data (absent)'
+  become: true
+  win_file:
+    path: "{{ backup_duplicati_config_path }}"
+    state: absent
+
+- name: "Remove Scheduled Task"
+  win_scheduled_task:
+    name: "duplicati-{{ backup_duplicati_backup_name }}"
+    state: absent
+
+- name: "Paths (absent)"
+  include_tasks: "{{ role_path }}/tasks/windows/paths.yml"
+  vars:
+    state: absent
+
+- name: 'sqlite (absent)'
+  include_tasks: "{{ role_path }}/tasks/windows/sqlite3.yml"
+  vars:
+    sqlite_state: absent
+
+- name: 'dotNET (absent)'
+  include_tasks: "{{ role_path }}/tasks/windows/dotnet.yml"
+  vars:
+    dotnet_state: absent

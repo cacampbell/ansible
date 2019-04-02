@@ -1,0 +1,16 @@
+.azure/
+.fact_cache/
+.retry/
+.ropeproject/
+.ansible-bitbucket-vars.yml
+.ansible-vault-pass
+*.yamllint
+*.pyc
+.ansible.log
+*.iml
+.yamllint
+*.retry
+*.iso
+packer_cache/
+output-virtualbox-iso/
+*.box

@@ -1,0 +1,26 @@
+---
+# playbooks/update.yml
+# Update systems
+
+- hosts: windows_workstation
+  tasks:
+    - win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+        blacklist:
+          - Windows Malicious Software Removal Tool for Windows
+          - \d{4}-\d{2} Cumulative Update for Windows
+      register: updates
+
+    - win_command: choco upgrade -y all
+    - win_reboot:
+      when: updates.reboot_required
+
+- hosts: linux_workstation
+  tasks:
+      - apt:
+            name: "*"
+            state: latest
+            update-cache: true

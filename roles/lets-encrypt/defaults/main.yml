@@ -1,0 +1,5 @@
+---
+# roles/letsencrypt/defaults/main.yml
+
+letsencrypt_email: it@shipfsp.com
+letsencrypt_server_systemctl: nginx

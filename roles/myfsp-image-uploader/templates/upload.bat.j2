@@ -1,0 +1,4 @@
+@echo off
+set libpath=%~dp0
+java -cp .;%libpath%http-uploader.jar;%libpath%commons-httpclient-2.0.jar;%libpath%commons-logging.jar kls.util.upload.HttpUploader
+pause > NUL

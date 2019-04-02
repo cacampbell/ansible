@@ -1,0 +1,4 @@
+---
+- hosts: windows_workstation
+  roles:
+    - role: thermal-printer

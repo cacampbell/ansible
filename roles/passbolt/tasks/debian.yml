@@ -1,0 +1,97 @@
+---
+# tasks file for passbolt
+
+- name: "apt requirements"
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - rng-tools
+    - python
+    - python3
+
+- name: "get get-pip.py"
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+
+- name: "Install pip"
+  shell: "python get-pip.py"
+  args:
+    chdir: /tmp
+
+- name: "pip docker"
+  pip:
+    name: docker
+    version: "{{ passbolt_pip_docker_version }}"
+
+- name: "pip docker-compose"
+  pip:
+    name: docker-compose
+
+- name: "check dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ passbolt_stage }}"
+
+- name: "email vars"
+  block:
+    - name: "Include Ansible Email vars"
+      include_vars: "{{ role_path }}/../../.ansible-email-vars.yml"
+    - name: "Translate Email vars"
+      set_fact:
+        passbolt_email_from: "{{ ansible_email_address }}"
+        passbolt_email_host: "{{ ansible_smtp_server }}"
+        passbolt_email_port: "{{ ansible_smtp_port }}"
+        passbolt_email_username: "{{ ansible_email_username }}"
+        passbolt_email_password: "{{ ansible_email_password }}"
+  delegate_to: localhost
+  when:
+    - passbolt_email_from is not defined
+    - passbolt_email_host is not defined
+    - passbolt_email_port is not defined
+    - passbolt_email_username is not defined
+    - passsbolt_email_password is not defined
+
+- name: "clone passbolt"
+  git:
+    repo: "{{ passbolt_repository }}"
+    dest: "{{ passbolt_stage }}"
+    version: "{{ passbolt_version }}"
+    force: "{{ passbolt_deploy }}"
+  ignore_errors: "not {{ passbolt_deploy }}"
+
+- name: "template env"
+  template:
+    src: "{{ item }}"
+    dest: "{{ passbolt_stage }}/env/{{ item|replace('.j2', '') }}"
+  loop:
+    - mysql.env.j2
+    - passbolt.env.j2
+
+- name: "template docker-compose.yml"
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ passbolt_stage }}/docker-compose.yml"
+
+- name: "firewall ports open"
+  ufw:
+    port: "{{ item }}"
+    rule: allow
+  loop:
+    - "{{ passbolt_http_host_port }}"
+    - "{{ passbolt_https_host_port }}"
+
+- name: "passbolt service"
+  docker_service:
+    project_src: "{{ passbolt_stage }}"
+
+- name: "sleep"
+  pause:
+    minutes: 1
+
+- name: "register admin"
+  shell: "docker exec passbolt_passbolt_1 su -m -c '/var/www/passbolt/bin/cake passbolt register_user -u {{ passbolt_admin_email }} -f {{ passbolt_admin_first_name }} -l {{ passbolt_admin_last_name }} -r admin' -s /bin/sh www-data"
+  when: passbolt_deploy

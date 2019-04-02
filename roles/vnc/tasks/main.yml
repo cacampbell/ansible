@@ -1,0 +1,27 @@
+---
+# roles/vnc/tasks/main.yml
+
+- include_role:
+    name: vnc-server
+  when: use_roles
+
+- include_role:
+    name: vnc-viewer
+  when: use_roles
+
+- name: 'Install VNC Connect'
+  win_chocolatey:
+    name: vnc-connect
+  when: use_roles == false
+
+- name: 'Retrieve Remote Resource: RealVNC Enterprise License'
+  slurp:
+      src: "{{ vnc_server_win_key_file }}"
+  register: vnc_license
+
+- name: 'License VNC Connect'
+  win_shell: '."{{ vnc_license_exe }}" -add {{ vnc_license.content|b64decode }}'
+  register: result
+  failed_when: result.rc == 1 and 'already installed' not in result.stderr
+  changed_when: result.rc == 0
+  when: use_roles == false

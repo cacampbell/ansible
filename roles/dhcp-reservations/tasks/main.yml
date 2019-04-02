@@ -1,0 +1,5 @@
+---
+# tasks file for dhcp-reservations
+
+- name: "Switch specific configuration"
+  include_tasks: "{{ role_path }}/tasks/{{ switch_make }}.yml"

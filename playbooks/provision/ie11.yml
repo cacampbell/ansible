@@ -1,0 +1,8 @@
+---
+- hosts: windows_workstation
+  tasks:
+      - name: 'Install IE 11'
+        win_command: 'Powershell.exe -ExecutionPolicy Bypass -Command "Enable-WindowsOptionalFeature -FeatureName Internet-Explorer-Optional-amd64 -All -Online -NoRestart"'
+      - name: 'Reboot'
+        win_reboot:
+

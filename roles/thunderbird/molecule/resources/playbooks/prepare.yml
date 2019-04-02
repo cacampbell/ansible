@@ -1,0 +1,30 @@
+---
+- name: Pause
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Wait
+      pause:
+        seconds: 30
+
+- name: Prepare
+  hosts: linux_server:linux_workstation
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH
+      wait_for:
+        port: 22
+      changed_when: false
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python3)
+      become: true
+      changed_when: false
+
+- name: Prepare
+  hosts: windows_server:windows_workstation
+  gather_facts: false
+  tasks:
+    - name: Wait for WinRM
+      win_wait_for:
+        port: 5986
+      changed_when: false

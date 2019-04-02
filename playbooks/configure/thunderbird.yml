@@ -1,0 +1,11 @@
+---
+- name: Check Thunderbird Configuration
+  hosts: windows_workstation:linux_workstation
+  vars:
+      thunderbird_install: false
+      thunderbird_purge: false
+      thunderbird_configure: true
+      thunderbird_remove: false
+  roles:
+      - role: thunderbird
+

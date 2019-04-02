@@ -1,0 +1,112 @@
+---
+# roles/myfsp-thermal-printer/tasks/windows.yml
+
+- name: "Ensure local Seagull files are present"
+  win_copy:
+      remote_src: true
+      src: "{{ seagull_driver_remote_folder }}"
+      dest: "{{ seagull_driver_local_folder }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  vars:
+      ansible_become_user: kls
+      ansible_become_password: kls
+  when: thermal_printer_make|lower == 'citizen'
+
+- name: "Import Seagull Certificate"
+  win_shell: 'Import-Certificate -filepath "{{ seagull_driver_cert_local }}" -certStoreLocation "{{ seagull_driver_cert_store }}"'
+  register: certimport
+  failed_when: certimport is failed and 'CommandNotFoundException' not in certimport.stderr
+  changed_when: false  # Running powershell scripts is always a change
+  when: thermal_printer_make|lower == 'citizen'
+  notify: reboot  # If a new certificate was installed, then a reboot will be scheduled
+
+- name: "Install DevCon Portable"
+  win_chocolatey:
+      name: devcon.portable
+      state: latest
+  when:
+      - thermal_printer_usb
+
+- name: "Find printers matching printer make"
+  win_command: 'devcon64 find *{{ thermal_printer_make }}*'
+  register: printer_search
+  failed_when: '"No matching devices" in printer_search.stdout'
+  when:
+      - thermal_printer_usb
+
+- name: "Determine printer hardware information"
+  set_fact:
+      printer_list: "{{ printer_search.stdout_lines|list }}"
+  when:
+      - thermal_printer_usb
+
+- name: "Determine printer hardware information (citizen)"
+  set_fact:
+      citizen_id: '{{ printer_list|first_citizen_id(thermal_printer_description) }}'
+  when:
+      - thermal_printer_make|lower == 'citizen'
+      - thermal_printer_usb
+
+- name: "Determine printer hardware information (citizen)"
+  set_fact:
+      citizen_port: '{{ citizen_id|port|default("USB001") }}'
+  when:
+      - thermal_printer_make|lower == 'citizen'
+      - thermal_printer_usb
+
+- name: "Restart printer (citizen)"
+  win_command: 'devcon64 restart "@{{ citizen_id }}"'
+  when:
+      - citizen_id is defined
+      - thermal_printer_usb
+
+- name: "Enable printer (citizen)"
+  win_command: 'devcon64 enable "@{{ citizen_id }}"'
+  when:
+      - citizen_id is defined
+      - thermal_printer_usb
+
+- name: "Install Seagull drivers"
+  win_command: '"{{ seagull_driver_wizard }}" install /description:"{{ thermal_printer_description }}" /model:"{{ thermal_printer_driver }}" /port:"{{ citizen_port|default("LPT1") }}" /share:"{{ thermal_printer_share_name }}"'
+  register: install
+  failed_when: install.rc != 0 and install.rc != 2
+  when:
+      - thermal_printer_make|lower == 'citizen'
+  notify: reboot  # Unclear when this triggers reboot, but it does sometimes
+
+- name: "Delete existing network mapping to thermal printer"
+  win_command: "net use /delete {{ lpt }}"
+  register: delete_map
+  changed_when: "'The command completed successfully.' in delete_map.stderr"
+  failed_when: "delete_map.rc != 0 and 'The network connection could not be found' not in delete_map.stderr"
+  with_items:
+    - lpt1
+    - lpt2
+  loop_control:
+      loop_var: lpt
+  when: thermal_printer_usb
+
+- name: "Verify thermal printer properties: shared, share name, data type"
+  win_shell: 'Set-Printer -Name "{{ thermal_printer_description }}" -Shared 1 -ShareName {{ thermal_printer_share_name }} -PrintProcessor winprint -DataType RAW'
+  when: thermal_printer_usb
+  ignore_errors: true
+
+- name: "Network map thermal printer"
+  win_command: 'net use {{ lpt_ }}: \\{{ inventory_hostname }}\{{ thermal_printer_share_name }} /persistent:yes'
+  register: net
+  failed_when: net.rc != 85 and net.rc != 0
+  with_items:
+      - lpt1
+      - lpt2
+  loop_control:
+      loop_var: lpt_
+  when: thermal_printer_usb
+
+- name: "Template Remap Script"
+  win_template:
+    src: fix-printer.bat.j2
+    dest: "C:\\Users\\{{ ansible_user }}\\Desktop\\Fix Printer.bat"
+  when: thermal_printer_usb
+

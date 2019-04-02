@@ -1,0 +1,6 @@
+---
+# roles/fqdn/defaults/main.yml
+
+fqdn_public_ip_addr: '127.0.0.1'
+fqdn_domain_name: 'localhost.localdomain'
+fqdn_hostname: 'localhost'

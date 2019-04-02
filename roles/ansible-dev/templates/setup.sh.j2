@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -x
+{{ ansible_managed|comment }}
+
+export PYENV_VERSION={{ ansible_dev_virtualenv|default('ansible') }}
+source {{ pyenv_path }}/.pyenvrc
+
+cd {{ ansible_dev_home }}
+pyenv local ansible
+pip install -r requirements.txt
+source scripts/sh/update-galaxy.sh
+source scripts/sh/install-silo.sh
+{% if ansible_dev_rebuild_boxes %}ansible-playbook -i inventory/production/HQ playbooks/imperative/rebuild-bento-boxes.yml{% endif %}
+
+unset PYENV_VERSION

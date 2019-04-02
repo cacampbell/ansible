@@ -1,0 +1,12 @@
+---
+- name: "Template Repair Script"
+  template:
+    src: repair.sh.j2
+    dest: "{{ backup_duplicati_repair_script_path }}"
+    mode: 0744
+  notify: remove repair sh
+
+- name: "Repair"
+  shell: ". {{ backup_duplicati_repair_script_path }}"
+  environment:
+    AUTOUPDATER_Duplicati_SKIP_UPDATE: 1

@@ -1,0 +1,8 @@
+---
+# Local Storage Backend
+backup_duplicati_path: "duplicati-cli"
+backup_duplicati_config_path: "/home/{{ ansible_user }}/.config/Duplicati"
+backup_duplicati_db_path: "/home/{{ ansible_user }}/.config/Duplicati/backups/{{ backup_duplicati_backup_name }}"
+backup_duplicati_backup_script_path: "{{ backup_duplicati_config_path|join('backup.sh') }}"
+backup_duplicati_restore_script_path: "{{ backup_duplicati_config_path|join('restore.sh') }}"
+backup_duplicati_repair_script_path: "{{ backup_duplicati_config_path|join('repair.sh') }}"

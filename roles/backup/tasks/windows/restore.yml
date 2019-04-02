@@ -1,0 +1,17 @@
+---
+- name: "Template Restore Script"
+  win_template:
+    src: restore.bat.j2
+    dest: "{{ backup_duplicati_restore_script_path }}"
+  notify: remove restore bat
+
+- name: "Make Restore Script Executable"
+  win_acl:
+    path: "{{ backup_duplicati_restore_script_path }}"
+    type: allow
+    rights: ExecuteFile
+    user: "{{ ansible_user }}"
+
+- name: "Restore"
+  become: true
+  win_shell: "{{ backup_duplicati_restore_script_path }}"

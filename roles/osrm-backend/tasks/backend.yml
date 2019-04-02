@@ -1,0 +1,20 @@
+---
+- name: "Pull Latest OSRM Image"
+  docker_image:
+      name: "osrm/osrm-backend"
+
+- name: "Start OSRM backend"
+  docker_container:
+      name: "osrm-backend-{{ osrm_profile }}"
+      image: "osrm/osrm-backend"
+      volumes:
+          - "{{ osrm_data }}:/data"
+      ports:
+          - "{{ osrm_backend_port }}:5000"
+      tty: true
+      interactive: true
+      state: started
+      privileged: true
+      command: "osrm-routed --algorithm mld /data/{{ osm_merged|regex_replace('.osm.pbf', '') }}.osrm"
+  tags:
+      - osrm_backend

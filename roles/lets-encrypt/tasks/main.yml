@@ -1,0 +1,38 @@
+---
+# roles/letsencrypt/tasks/main.yml
+
+- name: 'Install git'
+  package:
+      name: git
+      state: present
+
+- name: "pip virtaulenv"
+  pip:
+    name: virtualenv
+
+- name: "Get Let's Encrypt src"
+  git:
+    repo: https://github.com/letsencrypt/letsencrypt
+    dest: /opt/letsencrypt
+
+- name: "Install Let's Encrypt dependencies"
+  command: /opt/letsencrypt/letsencrypt-auto --help --no-bootstrap
+
+- name: "Template Let's Encrypt configuration"
+  template:
+      src: cli.ini.j2
+      dest: /opt/letsencrypt/cli.ini
+
+- name: "Generate SSL Certificate from Let's Encrypt"
+  command: /opt/letsencrypt/letsencrypt-auto certonly -c /opt/letsencrypt/cli.ini --agree-tos --non-interactive
+  args:
+    creates: /etc/letsencrypt/live/{{ ansible_fqdn }}/fullchain.pem
+
+- name: "Create CRON job to renew certificates (nginx)"
+  cron:
+    name: "Renew LetsEncrypt SSL Certs"
+    minute: "01"
+    hour: "00"
+    month: "*"
+    day: "1"
+    job: "systemctl stop {{ letsencrypt_server_systemctl }} && /opt/letsencrypt/letsencrypt-auto renew --quiet --no-self-upgrade && systemctl start {{ letsencrypt_server_systemctl }}"

@@ -1,0 +1,15 @@
+---
+- set_fact:
+    name: "{{ dataset }}-latest.osm.pbf"
+
+- set_fact:
+    sorted: "{{ dataset }}-latest.sort.osm.pbf"
+
+- stat:
+    path: "{{ osrm_data }}/{{ sorted }}"
+  register: sorted_file
+
+- command: "osmosis --rb {{ name }} --sort TypeThenId --wb {{ sorted }}"
+  args:
+      chdir: "{{ osrm_data }}"
+  when: not sorted_file.stat.exists

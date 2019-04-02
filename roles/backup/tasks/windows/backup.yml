@@ -1,0 +1,26 @@
+---
+- name: "Template Backup Script"
+  win_template:
+    src: backup.bat.j2
+    dest: "{{ backup_duplicati_backup_script_path }}"
+  notify: remove backup bat
+
+- name: "Make Backup Script Executable"
+  win_acl:
+    path: "{{ backup_duplicati_backup_script_path }}"
+    type: allow
+    rights: ExecuteFile
+    user: "{{ ansible_user }}"
+
+- name: "Set Duplicati AutoUpdate to Off"
+  win_environment:
+    state: present
+    name: AUTOUPDATER_Duplicati_SKIP_UPDATE
+    value: 1
+    level: user
+
+- name: "Backup"
+  win_shell: "{{ backup_duplicati_backup_script_path }}"
+  register: backup_shell
+  failed_when:
+    - "backup_shell is failed and 'Backup completed successfully!' not in backup_shell.stdout"

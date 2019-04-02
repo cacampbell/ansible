@@ -1,0 +1,4 @@
+net use /delete LPT1:
+net use /delete LPT2:
+net use LPT1: \\{{ inventory_hostname }}\{{ thermal_printer_share_name }} /persistent:yes
+net use LPT2: \\{{ inventory_hostname }}\{{ thermal_printer_share_name }} /persistent:yes

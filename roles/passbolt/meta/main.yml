@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Chris Campbell
+  description: Configuration Management for Passbolt, Open Source Password Management
+  company: KLS Air Express, Inc.
+  license: Apache
+  min_ansible_version: 2.6
+  platforms:
+    - name: Ubuntu
+      version: 16.04
+  galaxy_tags: ["password", "security", "passbolt", "ubuntu"]
+
+dependencies:
+  - role: geerlingguy.docker

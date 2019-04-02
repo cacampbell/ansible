@@ -1,0 +1,39 @@
+---
+- name: "Duplicati Service (stopped)"
+  become: true
+  service:
+    name: duplicati
+    state: stopped
+
+- name: "Duplicati (absent)"
+  become: true
+  apt:
+    name: duplicati
+    state: absent
+
+- name: "Duplicati Configuration Data (absent)"
+  become: true
+  file:
+    path: "{{ backup_duplicati_config_path }}"
+    state: absent
+
+- name: "Remove Cron Job"
+  become: true
+  cron:
+    cron_file: "duplicati-{{ backup_duplicati_backup_name }}"
+    state: absent
+
+- name: "Paths (absent)"
+  include_tasks: "{{ role_path }}/tasks/debian/paths.yml"
+  vars:
+    state: absent
+
+- name: "Sqlite3"
+  include_tasks: "{{ role_path }}/tasks/debian/sqlite3.yml"
+  vars:
+    sqlite_state: absent
+
+- name: "Mono"
+  include_tasks: "{{ role_path }}/tasks/debian/mono.yml"
+  vars:
+    mono_state: absent

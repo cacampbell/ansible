@@ -1,0 +1,39 @@
+---
+- name: Install
+  hosts: all
+  vars:
+    mfp_purge: false
+    multifunction_printers:
+      - { make: 'Xerox',
+          model: 'WorkCentre 7535',
+          ip: '172.20.24.230',
+          state: 'present',
+          default: true,
+          share: true,
+          share_name: "Xerox7535",
+          description: "CSR Fax",
+          location: "Mail Room"
+      }
+      - {
+          make: 'Xerox',
+          model: 'WorkCentre 5735',
+          ip: '172.20.24.142',
+          state: 'present',
+          default: false,
+          share: false,
+          description: "Ops Fax",
+          location: "IT Area (next to cart)"
+      }
+      - {
+          make: "HP",
+          model: "LaserJet Pro M402n",
+          ip: '172.20.24.86',
+          state: 'present',
+          default: false,
+          share: false,
+          description: 'Freight Payment Printer',
+          location: 'Freight Payment Area'
+      }
+  roles:
+    - role: multifunction-printer
+

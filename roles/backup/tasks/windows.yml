@@ -1,0 +1,28 @@
+---
+- name: "Load Defaults (windows)"
+  include_vars:
+    file: "{{ role_path }}/vars/windows.yml"
+
+- name: "Install"
+  include_tasks: "{{ role_path }}/tasks/windows/install.yml"
+  when: backup_install
+
+- name: "Configure"
+  include_tasks: "{{ role_path }}/tasks/windows/configure.yml"
+  when: backup_configure
+
+- name: "Repair"
+  include_tasks: "{{ role_path }}/tasks/windows/repair.yml"
+  when: backup_repair
+
+- name: "Backup"
+  include_tasks: "{{ role_path }}/tasks/windows/backup.yml"
+  when: backup_now
+
+- name: "Restore"
+  include_tasks: "{{ role_path }}/tasks/windows/restore.yml"
+  when: backup_restore
+
+- name: "Remove"
+  include_tasks: "{{ role_path }}/tasks/windows/remove.yml"
+  when: backup_remove

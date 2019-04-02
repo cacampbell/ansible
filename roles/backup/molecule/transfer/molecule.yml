@@ -1,0 +1,91 @@
+---
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: SERVERA
+    box: windows2016
+    provision: true
+    instance_raw_config_args:
+      - "vm.guest = :windows"
+      - "vm.communicator = 'winrm'"
+      - "vm.network 'private_network', type: 'static', ip: '192.168.1.10'"
+      - "vm.provision :shell, path: 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1', args: ' -EnableCredSSP'"
+    memory: 2048
+    cpus: 2
+    groups:
+      - windows_workstation
+      - windows_server
+
+  - name: SERVERB
+    box: windows2016
+    provision: true
+    instance_raw_config_args:
+      - "vm.guest = :windows"
+      - "vm.communicator = 'winrm'"
+      - "vm.network 'private_network', type: 'static', ip: '192.168.1.11'"
+      - "vm.provision :shell, path: 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1', args: ' -EnableCredSSP'"
+    memory: 2048
+    cpus: 2
+    groups:
+      - windows_workstation
+      - windows_server
+
+  - name: SERVERC
+    box: windows2016
+    provision: true
+    instance_raw_config_args:
+      - "vm.guest = :windows"
+      - "vm.communicator = 'winrm'"
+      - "vm.network 'private_network', type: 'static', ip: '192.168.1.12'"
+      - "vm.provision :shell, path: 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1', args: ' -EnableCredSSP'"
+    memory: 2048
+    cpus: 2
+    groups:
+      - windows_workstation
+      - windows_server
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    verify: ../resources/playbooks/verify.yml
+  inventory:
+    links:
+      group_vars: inventory/group_vars
+      host_vars: inventory/host_vars
+  lint:
+    name: ansible-lint
+scenario:
+  name: transfer
+  create_sequence:
+    - create
+    - prepare
+  check_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - prepare
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - verify
+    - destroy
+verifier:
+  name: inspec
+  lint:
+    name: rubocop

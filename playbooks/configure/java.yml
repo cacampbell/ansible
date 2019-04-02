@@ -1,0 +1,9 @@
+---
+
+- hosts: windows_workstation:windows_server
+  roles:
+      - role: java
+
+- hosts: linux_workstation:linux_server
+  roles:
+      - role: geerlingguy.java

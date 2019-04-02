@@ -1,0 +1,110 @@
+---
+# roles/workstation/tasks/main.yml
+# Windows workstation configuration
+- win_command: 'net use /delete /y Z:'
+  register: delete_Z
+  failed_when: delete_Z is failed and 'The network connection could not be found' not in delete_Z.stderr
+
+- win_command: 'net use Z: \\kls-dms.kls.intranet\documents kls /user:kls /persistent:yes'
+
+- name: 'Installed, Updated: Flash Player Plugin'
+  win_chocolatey:
+    name: flashplayerplugin
+    state: latest
+  ignore_errors: true
+
+- name: 'Installed, Updated: Waterfox'
+  win_chocolatey:
+      name: waterfox
+      state: latest
+
+- name: 'Installed, Updated: Skype'
+  win_chocolatey:
+      name: skype
+      state: latest
+      skip_scripts: true  # scripts work, maybe, 30% of the time
+  register: skype_install
+  failed_when: skype_install is failed and not 'exited 404' in skype_install.stdout
+
+- name: 'Installed, Updated: LibreOffice'
+  win_chocolatey:
+      name: libreoffice
+      state: latest
+  ignore_errors: true
+
+- name: 'Installed, Updated: PDFCreator'
+  win_chocolatey:
+      name: pdfcreator
+      state: latest
+      skip_scripts: true  # PDF Creator tries to update automatically, which doesn't work -- shell escaping?
+  ignore_errors: true
+
+- name: 'Installed, Updated: Explorer Plus Plus'
+  win_chocolatey:
+      name: explorerplusplus
+      state: latest
+
+- name: 'Installed, Updated: CCleaner'
+  win_chocolatey:
+      name: ccleaner
+      state: latest
+      ignore_checksum: true
+      skip_scripts: true
+  ignore_errors: true
+
+- name: 'Installed, Updated: CCEnhancer'
+  win_chocolatey:
+      name: ccenhancer
+      state: latest
+      ignore_checksum: true
+      skip_scripts: true
+  ignore_errors: true
+
+- name: 'Remove existing antivirus programs (from chocolatey)'
+  win_chocolatey:
+      name: "{{ prog }}"
+      state: absent
+  with_items:
+      - avg
+      - bitdefender
+  loop_control:
+      loop_var: prog
+  notify: reboot windows
+
+- name: 'Installed, Updated: MalwareBytes'
+  win_chocolatey:
+      name: malwarebytes
+      state: latest
+      ignore_checksum: true
+      skip_scripts: true
+  ignore_errors: true
+
+- name: 'Installed, Updated: AdwCleaner'
+  win_chocolatey:
+      name: adwcleaner
+      state: latest
+      ignore_checksum: true
+      skip_scripts: true
+  ignore_errors: true
+
+- name: 'Installed, Updated: WinBOLT'
+  win_chocolatey:
+      name: winbolt
+      state: latest
+      ignore_checksum: true
+      skip_scripts: true
+  ignore_errors: true
+
+- name: 'Installed, Updated: PDFSam'
+  win_chocolatey:
+      name: pdfsam
+      state: latest
+
+- name: 'Installed, Updated: Sumatra PDF'
+  win_chocolatey:
+      name: sumatrapdf
+      state: latest
+
+- name: 'Set up for CSR'
+  include_tasks: "{{ role_path }}/tasks/csr.yml"
+  when: workstation_csr

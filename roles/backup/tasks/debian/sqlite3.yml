@@ -1,0 +1,12 @@
+---
+- name: "Sqlite3 ({{ sqlite_state }})"
+  become: true
+  apt:
+    name: libsqlite3-dev
+    state: "{{ sqlite_state }}"
+
+- name: "Sqlite3 ({{ sqlite_state }})"
+  become: true
+  apt:
+    name: sqlite3
+    state: "{{ sqlite_state }}"
