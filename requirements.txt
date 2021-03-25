@@ -101,7 +101,7 @@ python-gilt==1.2.1
 python-vagrant==0.5.15
 pytz==2018.9
 pywinrm==0.3.0
-PyYAML==3.13
+PyYAML==5.4
 redis==3.2.0
 requests==2.20.1
 requests-credssp==1.0.2
